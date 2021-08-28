@@ -1,0 +1,97 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'latomedium';
+  src: url('./fonts/lato-medium.woff2') format('woff2'),
+       url('./fonts/lato-medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'latoregular';
+  src: url('./fonts/lato-regular.woff2') format('woff2'),
+       url('./fonts/lato-regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'intermedium';
+  src: url('./fonts/inter-medium.woff2') format('woff2'),
+       url('./fonts/inter-medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+@font-face {
+  font-family: 'interregular';
+  src: url('./fonts/inter-regular.woff2') format('woff2'),
+       url('./fonts/inter-regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+@font-face {
+  font-family: 'robotomedium';
+  src: url('./fonts/roboto-medium.woff2') format('woff2'),
+       url('./fonts/roboto-medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'robotoregular';
+  src: url('./fonts/roboto-regular.woff2') format('woff2'),
+       url('./fonts/roboto-regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+/*=================== Common CSS :STARTS ========================== */
+body{
+  box-sizing: border-box;
+  font-family: 'interregular'
+}
+section .container-fluid {
+  padding: 0 80px;
+}
+.commonBlueBtn{
+  background-color: #007BFF;
+  border: 1px solid #007BFF;
+  color: #ffffff;
+}
+.commonOutlineBtn{
+  background-color: transparent;
+  border: 1px solid #007BFF;
+  color: #007BFF;
+}
+label {
+  color: #525252;
+  font-size: 14px;
+}
+p{
+  font-size: 14px;
+ color: #3A4550;
+  margin-bottom: 0;
+}
+a{
+ color: #007BFF;
+ font-size: 14px;
+}
+.mainbgColor{
+  background-color: #F6FEFF;
+}
+ul {
+  list-style-type: none;
+}
+/*=================== Common CSS :ENDS ========================== */

@@ -1,0 +1,28 @@
+.Top-Navigation ul.navbar-nav {
+    padding-left: 40px;
+}
+.Top-Navigation nav.navbar {
+    padding: 0 80px;
+    height: 90px;
+    background-color: #ffffff;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: rgb(0 0 0);
+    font-size: 14px;
+    font-family: 'intermedium';
+}
+button.navbar-Btn {
+    font-size: 14px;
+    border: none;
+    padding: 6px 18px;
+    font-family: 'intermedium';
+    cursor: pointer;
+}
+button.navbar-Btn.log-in-btn {
+    background: none;
+}
+button.navbar-Btn.sign-up-btn {
+    color: #007BFF;
+    background-color: #007BFF19;
+    border-radius: 30px;
+}
