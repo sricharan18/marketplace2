@@ -1,5 +1,4 @@
-export const Input = (props) => {
-
+ export const Input = (props) => {
     let inputTag = null;
     switch (props.elementType){
         case 'input' : 

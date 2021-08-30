@@ -9,10 +9,14 @@ class CreateProfile extends React.Component{
     sub_options = null
     handleChange(field,event)
     {
-        event.preventDefault();
+         
         if(field=='profilePic')
         {
-            this.props.changeState(field,event.target.files[0])
+            const replacer = [];
+            for (const key in event.target.files[0]) {
+                replacer.push(key);
+            }
+            this.props.changeState(field,JSON.stringify(event.target.files[0], replacer))
         }
         else{
             this.props.changeState(field,event.target.value)
@@ -62,14 +66,14 @@ class CreateProfile extends React.Component{
                                                 className="form-control" 
                                                 placeholder="user@gmail.com"
                                                 elementType="input" 
-                                                type="text" disabled={true} onChange={this.handleChange.bind(this,"Email")}/>
+                                                type="text" onChange={this.handleChange.bind(this,"Email")}/>
 
                                                 <Input 
                                                 divClass="form-group col-md-6" label="Phone Number" 
                                                 className="form-control" 
                                                 placeholder="8976543224"
                                                 elementType="input" 
-                                                type="text" disabled={true} onChange={this.handleChange.bind(this,"PhoneNumber")}/>
+                                                type="text" onChange={this.handleChange.bind(this,"PhoneNumber")}/>
 
                                             </div>
                                             <div className="form-group">
@@ -161,7 +165,7 @@ class CreateProfile extends React.Component{
                         </div>
                         <div className="btn-group NextFormButtons">
                             <button className="common-btn commonOutlineBtn">Draft</button>
-                            <button className="common-btn commonBlueBtn" onClick={()=>console.log(this.props.fields)}>Save & Next</button>
+                            <button className="common-btn commonBlueBtn" onClick={()=>localStorage.setItem("Basic Details",JSON.stringify(this.props.fields))}>Save & Next</button>
                         </div>
                     </div>
                 </div>
