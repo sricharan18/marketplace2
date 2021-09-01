@@ -1,3 +1,4 @@
+/* ================== Create Profile CSS : STARTS ===========================
 ul.ProfileStepTabsList {
     padding: 30px;
 }
@@ -14,22 +15,67 @@ ul.ProfileStepTabsList {
     color: #525252;
     font-size: 12px;
 }
-a.ProfileStepTab {
+div.ProfileStepTab {
     display: inline-block;
     padding: 12px 20px;
     border-radius: 4px;
     text-decoration: none;
     width: 100%;
 }
-a.ProfileStepTab.active, a.ProfileStepTab:hover{
+div.ProfileStepTab.active, div.ProfileStepTab:hover{
     background-color: #EAF3FD;
 }
-a.ProfileStepTab.filled{
+div.ProfileStepTab.filled{
     background-color: #E9FFF2;
     border: 1px solid #32C26F;
+    position: relative;
+}
+div.ProfileStepTab.filled::after{
+content: url(../../imgaes/icons/check_circle_black_24dp.svg);
+position: absolute;
+right: 10px;
+top: 7px;
+} */
+
+ul.ProfileStepTabsList {
+    padding: 30px;
+}
+.ProfileStepTabsList li {
+    margin: 15px 0;
+}
+.ProfileStepTab h6{
+    margin-bottom: 4px;
+    color: #525252;
+    font-size: 16px;
+    font-family: 'robotoregular';
+}
+.ProfileStepTab span{
+    color: #525252;
+    font-size: 13px;
+}
+div.ProfileStepTab {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    width: 100%;
+}
+div.ProfileStepTab.active, a.ProfileStepTab:hover{
+    background-color: #EAF3FD;
+}
+div.ProfileStepTab.filled{
+    background-color: #E9FFF2;
+    border: 1px solid #32C26F;
+    position: relative;
+}
+div.ProfileStepTab.filled::after{
+content: url(../../imgaes/icons/check_circle_black_24dp.svg);
+position: absolute;
+right: 10px;
+top: 7px;
 }
 
-/* =================  FORM CSS : STARTS ================ */
+/* ================= Basic Details FORM CSS : STARTS ================ */
 .CreateProfileForm {
     background-color: #ffffff;
     border-radius: 4px;
@@ -68,7 +114,7 @@ font-family: 'robotoregular';
     font-family: 'robotomedium';
     margin: 0;
 }
-.FormSec.basicDetails {
+.FormSec {
     padding: 20px 35px;
 }
 .RadioBtn .form-check-inline .form-check-input {
@@ -123,6 +169,10 @@ font-family: 'robotoregular';
 .NextFormButtons .common-btn.commonOutlineBtn{
     background-color: #ffffff;
 }
-/* =================  FORM CSS : ENDS ================ */
 
-/* ================== Create Profile CSS : ENDS ===========================*/
+.profilePicImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+/* ================= Basic Details FORM CSS : ENDS ================ */

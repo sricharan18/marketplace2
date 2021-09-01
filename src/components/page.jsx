@@ -14,6 +14,7 @@ class Page extends React.Component{
     return (
         <div>
             <Route path="/createProfile" exact component={CreateProfile} />
+
         </div>
     )
     }

@@ -1,13 +1,32 @@
+ import './input.css';
+ 
  export const Input = (props) => {
     let inputTag = null;
+    let initialClasses = []
+    let errorMessage = null
+
+    if (props.config){
+        initialClasses = [props.config.className]
+    } else {
+        initialClasses = [props.className]
+    }
+    if (props.inValid) {
+        initialClasses.push("Invalid")
+        errorMessage = <p className="error">{props.error}</p>
+    }
+    
     switch (props.elementType){
         case 'input' : 
-                inputTag = <input {...props}></input>
+                inputTag = <input {...props.config} 
+                    className = {initialClasses.join(" ")} 
+                    onChange = {props.change}></input> 
                 break;
         case 'select' :
-                inputTag = (<select {...props}>
-                   { props.options.map( option => 
-                    (<option value={option}>{option}</option>))
+                inputTag = (<select {...props.config} 
+                    onChange = {props.change} 
+                    className = {initialClasses.join(" ")}>
+                   { props.options.map( (option, i) => 
+                    (<option value={option} key={i}>{option}</option>))
                 }
                 </select>)
                 break;
@@ -22,6 +41,7 @@
         <div className={props.divClass}>
             <label className={props.labelClass}>{props.label}</label>
             {inputTag}
+            {errorMessage}
         </div>
     )
 }

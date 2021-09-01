@@ -1,0 +1,8 @@
+.CreateProfileForm .form-control.Invalid {
+    border-color: #D7373F;
+}
+
+.error{
+    font-size: 14px !important;
+    color: #D7373F !important;
+}

@@ -1,0 +1,195 @@
+.panel-title > a:hover,
+.panel-title > a:active,
+.panel-title > a:focus {
+  text-decoration: none;
+}
+.panel-heading {
+    background-color: #F9FAFF;
+    border: 1px solid #F3F3F3;
+    padding: 22px 90px 22px 20px;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+}
+.AdditionalDetails .panel.panel-default {
+    margin-bottom: 10px;
+}
+.AdditionalDetails .panel-title {
+    /* background-color: #F9FAFF;
+    border: 1px solid #F3F3F3;
+    padding: 12px 20px;
+    border-radius: 4px; */
+    margin-bottom: unset;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.AdditionalDetails .panel-title a {
+    color: #525252;
+}
+.AdditionalDetails .panel-body {
+    padding: 15px 20px;
+    border: 1px solid #F3F3F3;
+    border-radius: 0 0 4px 4px;
+    border-top: 0;
+}
+.actionBtns {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    top: 30%;
+    margin-right: 22px;
+}
+.addDetails {
+    width: 24px;
+    height: 24px;
+    background-color: #E9F4FF;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.actionBtns a{
+    margin: 0 5px;
+}
+.addedDetailContent span{
+color: #989898;
+font-size: 12px;
+}
+.addedDetailContent p{
+    color: #525252;
+}
+.addedDetailImg {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: aliceblue;
+    margin-right: 20px;
+}
+.disF {
+    display: flex;
+}
+
+/* Additional Details Modal  CSS : STARTS */
+.CreateProfileModal.modal-dialog {
+    max-width: 800px;
+}
+.multistepModal.CreateProfileModal .modal-content {
+    min-width: 800px;
+    min-height: unset;
+}
+.multistepModal.CreateProfileModal .modal-header {
+    border-bottom: 1px solid #E7E7E7;
+}
+.multistepModal.CreateProfileModal .modal-header h5 {
+    font-size: 18px;
+}
+.multistepModal.CreateProfileModal .modal-body {
+    padding: 1.5rem 2rem;
+}
+.CreateProfileModal input.form-control::placeholder{
+    color: #7F92A3;
+}
+.CreateProfileModal .form-check {
+    margin-top: 40px;
+    padding-left: unset;
+}
+.CreateProfileModal .form-check .form-check-label{
+    color: #7F92A3;
+}
+.marX15{
+    margin: 15px 0;
+}
+.skill svg{
+    margin-right: 10px;
+}
+.multistepModal.CreateProfileModal .modal-footer {
+    background-color: #F9FAFF;
+    justify-content: flex-end;
+    border-top: 1px solid #E7E7E7;
+    padding: 1rem 2rem;
+}
+.btn-group.NextFormButtons.ModalNextFormButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+}
+.NextFormButtons.ModalNextFormButtons .common-btn {
+    font-size: 14px;
+    font-family: 'robotoregular';
+    height: 40px;
+    margin: 0 0 0 10px;
+}
+
+
+/* Custom checkbox :STARTS */
+
+/* The container */
+.checkBoxContainer {
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #7F92A3;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .checkBoxContainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkBoxContainer .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 19px;
+    width: 19px;
+    background-color: #ffffff;
+    border: 1px solid #EBEEF3;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .checkBoxContainer:hover input ~ .checkmark {
+    background-color: #E7E7E7;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .checkBoxContainer input:checked ~ .checkmark {
+    background-color: #007BFF;
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkBoxContainer .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .checkBoxContainer input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .checkBoxContainer .checkmark:after {
+    left: 6px;
+    top: 1px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }

@@ -82,7 +82,7 @@ label {
 p{
   font-size: 14px;
  color: #3A4550;
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
 }
 a{
  color: #007BFF;
