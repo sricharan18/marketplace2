@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import CollapsedEducation from './collapsedDetails/collapsedEducation';
+import CollapsedWorkDetails from './collapsedDetails/collapsedWorkDetails';
 
 class DetailsPanel extends React.Component {
     render(){
@@ -19,14 +20,22 @@ class DetailsPanel extends React.Component {
                     </svg>
                     </a>
                 </div>
-
-                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                {this.props.href==='collapseOne'&&
+                <div id={this.props.href} class="panel-collapse collapse in" role="tabpanel" aria-labelledby={this.props.id}>
                 <div class="panel-body">
                 
                 {this.props.fields.map((val,id) => (<CollapsedEducation val = {val} key={id} id={id}/>))}
-                
+
                 </div>
-            </div>
+            </div>}
+            {this.props.href==='collapseThree'&&
+            <div id={this.props.href} class="panel-collapse collapse in" role="tabpanel" aria-labelledby={this.props.id}>
+                <div class="panel-body">
+                
+                {this.props.workDetailsFields.map((val,id) => (<CollapsedWorkDetails val = {val} key={id} id={id}/>))}
+
+                </div>
+            </div>}
             </div>
             
         )
@@ -37,6 +46,7 @@ class DetailsPanel extends React.Component {
 const mapStateToProps = state => {
     return {
         fields : state.educationalDetails.educationalDetails,
+        workDetailsFields : state.workDetails.workDetails,
     }
 }
 

@@ -164,7 +164,7 @@ class AdditionalDetails extends React.Component {
                                           </div>
 
 
-                                          {/* <div class="panel panel-default">
+                                           {/*<div class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingThree" >
                                               <h4 class="panel-title" href="#collapseThree" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" aria-controls="collapseThree">
                                                 <a class="collapsed">
@@ -190,9 +190,9 @@ class AdditionalDetails extends React.Component {
                                                
                                               </div>
                                             </div>
-                                          </div> */}
+                                        </div> */}
 
-                                          <DetailsPanel id="headingThree" title="WorkHistory"/>
+                                          <DetailsPanel id="headingThree" title="WorkHistory" href="collapseThree"/>
 
 
                                           <div class="panel panel-default">

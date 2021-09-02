@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-class CollapsedEducation extends React.Component{
+class CollapsedWorkDetails extends React.Component{
 
     render (){
         return (
@@ -11,8 +11,8 @@ class CollapsedEducation extends React.Component{
                     </div>
 
                     <div class="addedDetailContent">
-                    <p>{this.props.val.Degree.Degree}</p>
-                    <span>{this.props.val.University.University}, CGPA 79%, From 2013 - 2017</span>
+                    <p>{this.props.val.Designation.Designation}</p>
+                    <span>{this.props.val.EmployerName.EmployerName}, Full Time, {this.props.val.StartDate.StartDate.split("-")[0]} - {this.props.val.EndDate.EndDate.split("-")[0]}</span>
                     </div>
 
                     <div class="actionBtns">
@@ -35,15 +35,15 @@ class CollapsedEducation extends React.Component{
 
 const mapStateToProps = state => {
     return {
-        // edit : state.educationalDetails.edit,
+        // edit : state.workDetails.edit,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        editDetails : (id) => dispatch({type : "EDIT_DETAILS", id : id, name:'educationalDetails'}),
-        deleteDetails : (id) => dispatch({type : "DELETE_DETAILS", id : id,name:'educationalDetails'})
+        editDetails : (id) => dispatch({type : "EDIT_DETAILS", id : id, name:'workDetails'}),
+        deleteDetails : (id) => dispatch({type : "DELETE_DETAILS", id : id,name:'workDetails'})
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CollapsedEducation);
+export default connect(mapStateToProps, mapDispatchToProps)(CollapsedWorkDetails);

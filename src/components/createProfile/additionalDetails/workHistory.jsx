@@ -68,6 +68,7 @@ class WorkHistory extends React.Component {
                         config = {{className :"form-control" ,
                                 placeholder : "Enter Employer Name", 
                                 type:"text"}}
+                        value = {this.props.fields.EmployerName.EmployerName}
                         change={this.handleChange.bind(this,"EmployerName" ,{required : true, name : true})}
                         inValid = {this.props.fields.EmployerName.inValid}
                         error = {this.props.errors.EmployerName}
@@ -78,6 +79,7 @@ class WorkHistory extends React.Component {
                         config = {{className :"form-control" ,
                                 placeholder : "Enter Designation", 
                                 type:"text"}}
+                        value={this.props.fields.Designation.Designation}
                         change={this.handleChange.bind(this,"Designation" ,{})}
                         inValid = {this.props.fields.Designation.inValid}
                         error = {this.props.errors.Designation}
@@ -91,6 +93,7 @@ class WorkHistory extends React.Component {
                         config = {{className :"form-control" ,
                                 placeholder : "Enter Start Date", 
                                 type:"date"}}
+                        value={this.props.fields.StartDate.StartDate}
                         change={this.handleChange.bind(this,"StartDate" ,{required : true, startDate : true})}
                         inValid = {this.props.fields.StartDate.inValid}
                         error = {this.props.errors.StartDate}
@@ -103,6 +106,7 @@ class WorkHistory extends React.Component {
                         config = {{className :"form-control" ,
                                 placeholder : "Enter End Date", 
                                 type:"date"}}
+                        value={this.props.fields.EndDate.EndDate}
                         change={this.handleChange.bind(this,"EndDate" ,{required : true, endDate : true})}
                         inValid = {this.props.fields.EndDate.inValid}
                         error = {this.props.errors.EndDate}
@@ -126,6 +130,7 @@ class WorkHistory extends React.Component {
                         config = {{className :"form-control" ,
                                 placeholder : "Enter Work Location", 
                                 type:"text"}}
+                        value={this.props.fields.WorkLocation.WorkLocation}
                         change={this.handleChange.bind(this,"WorkLocation" ,{required : true, workLocation : true})}
                         inValid = {this.props.fields.WorkLocation.inValid}
                         error = {this.props.errors.WorkLocation}
@@ -136,7 +141,7 @@ class WorkHistory extends React.Component {
                 </div>
                 <div class="modal-footer">
                 <div class="btn-group NextFormButtons ModalNextFormButtons ">
-                    <button class="common-btn commonOutlineBtn">Reset</button>
+                    <button class="common-btn commonOutlineBtn" onClick={this.props.resetDetails}>Reset</button>
                     <button class="common-btn commonBlueBtn" 
                     onClick = {this.props.formValid ? ()=>
                         {
@@ -153,7 +158,7 @@ class WorkHistory extends React.Component {
 const mapStateToProps = state => {
     return {
         dob:state.fields.DOB.DOB,
-        fields:state.workDetails,
+        fields:state.workDetails.fields,
         errors : state.workDetails.errors,
         formValid : state.workDetails.formValid,
     }
@@ -164,7 +169,8 @@ const mapDispatchToProps = dispatch => {
         changeState : (name,val)=> dispatch({type:"CHANGE_FIELD",name:name,val:val, data:'workDetails'}),
         changeErrorState : (field, val) => dispatch({type : "CHANGE_ERROR_STATE", field : field, val : val, data : 'workDetails'}),
         checkFormIsValid : () => dispatch({type: "IS_FORM_VALID", data : 'workDetails'}), 
-        addWorkDetails : (val) => dispatch({type: "ADD_DETAILS", data : 'workDetailsCollection', val:val})
+        addWorkDetails : (val) => dispatch({type: "ADD_DETAILS", data : 'workDetails', val:val}),
+        resetDetails : () => dispatch({type:"RESET_FORM", data : 'workDetails'})
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(WorkHistory)

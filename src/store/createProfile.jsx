@@ -70,8 +70,37 @@ const initialState = {
             University: "Enter valid University",
             Grade: "Enter valid grade",
         },
-    }
-    
+    },
+    workDetails : {
+        fields:{
+            EmployerName : {EmployerName : "", invalid : "false"},
+            Designation : {Designation : "", invalid : "false"},
+            StartDate : {StartDate : "", invalid : "false"},
+            EndDate : {EndDate : "", invalid : "false"},
+            WorkLocation : {WorkLocation : "", invalid : "false"},
+            CurrentlyStudying:{CurrentlyStudying : true,},
+        },
+        workDetails : [{
+            EmployerName : {EmployerName : "TCS Company", invalid : "false"},
+            Designation : {Designation : "UI Designer", invalid : "false"},
+            StartDate : {StartDate : "2016-06-01", invalid : "false"},
+            EndDate : {EndDate : "2018-06-01", invalid : "false"},
+            WorkLocation : {WorkLocation : "Hyderabad", invalid : "false"},
+            CurrentlyStudying:{CurrentlyStudying : false,},
+        }],
+        edit : {id : null},
+        errors : {
+            EmployerName: "Enter valid Name",
+            StartDate: "Enter valid Date",
+            EndDate: "Enter valid Date"
+        },
+        errorsdup : {
+            EmployerName: "Enter valid Name",
+            StartDate: "Enter valid Date",
+            EndDate: "Enter valid Date"
+        },
+        formValid: false,
+    },
 }
 
 const reducer = (state = initialState, action) => {
@@ -139,22 +168,26 @@ const reducer = (state = initialState, action) => {
                 newState[action.data][action.data] = newState[action.data][action.data].concat(action.val)
                 console.log(newState[action.data][action.data])
             }
-            console.log(newState.educationalDetails.educationalDetails)
             break;
 
         case "EDIT_DETAILS":
-            newState.educationalDetails.fields = newState.educationalDetails.educationalDetails[action.id]
-            Object.keys(newState.educationalDetails.errors).map((val) => {newState.educationalDetails.errors[val] = ""})
-            newState.educationalDetails.errors = {}
-            newState.educationalDetails.edit.id = action.id
+            newState[action.name].fields = newState[action.name][action.name][action.id]
+            Object.keys(newState[action.name].errors).map((val) => {newState[action.name].errors[val] = ""})
+            newState[action.name].errors = {}
+            newState[action.name].edit.id = action.id
             break;
 
-        case "UPDATE_DETAILS":
-
-            break;
-
+        case "RESET_FORM":
+                var obj = Object.assign({}, newState[action.data].fields)
+                Object.keys(obj).map((val, id) => { 
+                        if(typeof(obj[val][val]) == "boolean"){obj[val][val] = false}
+                        else {obj[val][val] = ""}})
+                Object.keys(newState[action.data].fields).map((val, id) => {newState[action.data].fields[val].inValid = "false"})
+                newState[action.data].fields = obj
+                newState[action.data].formValid = false;
+                break;
         case "DELETE_DETAILS":
-            newState.educationalDetails.educationalDetails = newState.educationalDetails.educationalDetails.filter((item, id) => id !== action.id)
+            newState[action.name][action.name] = newState[action.name][action.name].filter((item, id) => id !== action.id)
             break;
 
         default :
