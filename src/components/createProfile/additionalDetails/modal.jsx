@@ -6,7 +6,7 @@ import WorkHistory from "./workHistory";
 class Modal extends React.Component {
     render(){
         return (
-            <EducationalDetails />
+            <WorkHistory />
         )
     }
 }

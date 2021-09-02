@@ -34,8 +34,29 @@ const initialState = {
         Name : {Name : "", invalid : "false"},
         educationalDetails : [],
 
-    }
-    
+    },
+    workDetails : {
+        fields:{
+            EmployerName : {EmployerName : "", invalid : "false"},
+            Designation : {Designation : "", invalid : "false"},
+            StartDate : {StartDate : "", invalid : "false"},
+            EndDate : {EndDate : "", invalid : "false"},
+            WorkLocation : {WorkLocation : "", invalid : "false"},
+            CurrentlyStudying:{CurrentlyStudying : true,},
+        },
+        workDetails : [],
+        errors : {
+            EmployerName: "Enter valid Name",
+            StartDate: "Enter valid Date",
+            EndDate: "Enter valid Date"
+        },
+        errorsdup : {
+            EmployerName: "Enter valid Name",
+            StartDate: "Enter valid Date",
+            EndDate: "Enter valid Date"
+        },
+        formValid: false,
+    },
 }
 
 const reducer = (state = initialState, action) => {
@@ -57,9 +78,9 @@ const reducer = (state = initialState, action) => {
                 newState.fields=f
                 break;
         case "CHANGE_FIELD":
-                let f1={...newState.fields}
+                let f1={...newState[action.data].fields}
                 f1[action.name]=action.val;
-                newState.fields=f1
+                newState[action.data].fields=f1
                 break;
         case "ADDITIONAL_DETAILS":
                 newState.goToAdditionalDetails = true;
@@ -72,7 +93,7 @@ const reducer = (state = initialState, action) => {
                     var t = keys[i]
                     if(newState[action.data].errors[t] !== ""){
                         c = 1
-                        newState[action.data][t].inValid = true
+                        newState[action.data].fields[t].inValid = true
                         console.log(newState[action.data].errors[t])
                     }
                 }
@@ -85,9 +106,12 @@ const reducer = (state = initialState, action) => {
                 if (action.val){
                     newState[action.data].errors[action.field] = ""
                 } else {
-                    newState[action.data].errors[action.field] = newState.fields.errorsdup[action.field]
+                    newState[action.data].errors[action.field] = newState[action.data].errorsdup[action.field]
                 }
                 break;
+        case "ADD_DETAILS":
+            newState[action.data].push(action.val)
+            break;
         default :
             break;
     }
