@@ -19,7 +19,7 @@
         case 'input' : 
                 inputTag = <input {...props.config} 
                     className = {initialClasses.join(" ")} 
-                    onChange = {props.change}></input> 
+                    onChange = {props.change} value = {props.value}></input> 
                 break;
         case 'select' :
                 inputTag = (<select {...props.config} 

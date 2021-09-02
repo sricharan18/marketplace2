@@ -1,3 +1,5 @@
+import educationalDetails from "../components/createProfile/additionalDetails/educationalDetails";
+
 const initialState = {
     CategorySelected : "HealthCare",
     goToAdditionalDetails : false,
@@ -31,37 +33,52 @@ const initialState = {
         formValid: false,
     },
     educationalDetails :{
-        Name : {Name : "", invalid : "false"},
-        educationalDetails : [],
-
-    },
-    workDetails : {
-        fields:{
-            EmployerName : {EmployerName : "", invalid : "false"},
-            Designation : {Designation : "", invalid : "false"},
-            StartDate : {StartDate : "", invalid : "false"},
-            EndDate : {EndDate : "", invalid : "false"},
-            WorkLocation : {WorkLocation : "", invalid : "false"},
-            CurrentlyStudying:{CurrentlyStudying : true,},
+        fields : {
+            Degree : {Degree : "", invalid : "false"},
+            PassingYear : {PassingYear : "", invalid : 'false'},
+            CurrentlyStudying : {CurrentlyStudying : false, invalid : 'false'},
+            University : {University : "", invalid : 'false'},
+            Grade : {Grade : "", invalid : 'false'},
         },
-        workDetails : [],
+        educationalDetails : [{Degree : {Degree : "B.Tech1", invalid : "false"},
+                                PassingYear : {PassingYear : "2022", invalid : 'false'},
+                                CurrentlyStudying : {CurrentlyStudying : false, invalid : 'false'},
+                                University : {University : "CVR", invalid : 'false'},
+                                Grade : {Grade : "80%", invalid : 'false'}},
+                                {Degree : {Degree : "B.Tech2", invalid : "false"},
+                                PassingYear : {PassingYear : "2022", invalid : 'false'},
+                                CurrentlyStudying : {CurrentlyStudying : false, invalid : 'false'},
+                                University : {University : "CVR", invalid : 'false'},
+                                Grade : {Grade : "80%", invalid : 'false'}},
+                                {Degree : {Degree : "B.Tech3", invalid : "false"},
+                                PassingYear : {PassingYear : "2022", invalid : 'false'},
+                                CurrentlyStudying : {CurrentlyStudying : false, invalid : 'false'},
+                                University : {University : "CVR", invalid : 'false'},
+                                Grade : {Grade : "80%", invalid : 'false'}}
+                            ],
+        formValid: false,
+        edit : {id : null},
         errors : {
-            EmployerName: "Enter valid Name",
-            StartDate: "Enter valid Date",
-            EndDate: "Enter valid Date"
+            Degree: "Enter valid Degree",
+            PassingYear: "Enter valid PassingYear",
+            University: "Enter valid University",
+            Grade: "Enter valid grade",
         },
         errorsdup : {
-            EmployerName: "Enter valid Name",
-            StartDate: "Enter valid Date",
-            EndDate: "Enter valid Date"
+            Degree: "Enter valid Degree",
+            PassingYear: "Enter valid PassingYear",
+            University: "Enter valid University",
+            Grade: "Enter valid grade",
         },
-        formValid: false,
-    },
+    }
+    
 }
 
 const reducer = (state = initialState, action) => {
     const newState = {...state}
+
     switch (action.type){
+
         case "CHANGE_CATEGORY" : 
                 newState.CategorySelected = action.val;
                 let f={...newState.fields}
@@ -77,11 +94,13 @@ const reducer = (state = initialState, action) => {
                 }
                 newState.fields=f
                 break;
+
         case "CHANGE_FIELD":
                 let f1={...newState[action.data].fields}
                 f1[action.name]=action.val;
                 newState[action.data].fields=f1
                 break;
+
         case "ADDITIONAL_DETAILS":
                 newState.goToAdditionalDetails = true;
                 break;
@@ -102,6 +121,7 @@ const reducer = (state = initialState, action) => {
                 }
                 // console.log(newState.fields.formValid)
                 break;
+
         case "CHANGE_ERROR_STATE":
                 if (action.val){
                     newState[action.data].errors[action.field] = ""
@@ -109,9 +129,34 @@ const reducer = (state = initialState, action) => {
                     newState[action.data].errors[action.field] = newState[action.data].errorsdup[action.field]
                 }
                 break;
+
         case "ADD_DETAILS":
-            newState[action.data].push(action.val)
+            let edit = newState[action.data].edit.id
+            if (edit !== null){
+                newState[action.data][action.data] = newState[action.data][action.data].map((item, id) => {if(id===edit){return action.val} else{return item}})
+                newState[action.data].edit.id = null
+            } else {
+                newState[action.data][action.data] = newState[action.data][action.data].concat(action.val)
+                console.log(newState[action.data][action.data])
+            }
+            console.log(newState.educationalDetails.educationalDetails)
             break;
+
+        case "EDIT_DETAILS":
+            newState.educationalDetails.fields = newState.educationalDetails.educationalDetails[action.id]
+            Object.keys(newState.educationalDetails.errors).map((val) => {newState.educationalDetails.errors[val] = ""})
+            newState.educationalDetails.errors = {}
+            newState.educationalDetails.edit.id = action.id
+            break;
+
+        case "UPDATE_DETAILS":
+
+            break;
+
+        case "DELETE_DETAILS":
+            newState.educationalDetails.educationalDetails = newState.educationalDetails.educationalDetails.filter((item, id) => id !== action.id)
+            break;
+
         default :
             break;
     }
