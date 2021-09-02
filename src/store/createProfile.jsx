@@ -1,5 +1,3 @@
-import educationalDetails from "../components/createProfile/additionalDetails/educationalDetails";
-
 const initialState = {
     CategorySelected : "HealthCare",
     goToAdditionalDetails : false,
@@ -40,6 +38,7 @@ const initialState = {
             University : {University : "", invalid : 'false'},
             Grade : {Grade : "", invalid : 'false'},
         },
+
         educationalDetails : [{Degree : {Degree : "B.Tech1", invalid : "false"},
                                 PassingYear : {PassingYear : "2022", invalid : 'false'},
                                 CurrentlyStudying : {CurrentlyStudying : false, invalid : 'false'},
@@ -104,7 +103,8 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    const newState = {...state}
+    // const newState = {...state}
+    const newState = JSON.parse(JSON.stringify(state))
 
     switch (action.type){
 
@@ -164,30 +164,41 @@ const reducer = (state = initialState, action) => {
             if (edit !== null){
                 newState[action.data][action.data] = newState[action.data][action.data].map((item, id) => {if(id===edit){return action.val} else{return item}})
                 newState[action.data].edit.id = null
+                newState.educationalDetails.errors = newState.educationalDetails.errorsdup
             } else {
                 newState[action.data][action.data] = newState[action.data][action.data].concat(action.val)
                 console.log(newState[action.data][action.data])
             }
             break;
+        case "DELETE_DETAILS":
+            newState[action.name][action.name] = newState[action.name][action.name].filter((item, id) => id !== action.id)
+             
+            break;
 
         case "EDIT_DETAILS":
-            newState[action.name].fields = newState[action.name][action.name][action.id]
+            var obj1 = JSON.parse(JSON.stringify(newState[action.name][action.name][action.id]));
+            // var ob = Object.assign({}, newState.educationalDetails.educationalDetails[action.id])
+            newState[action.name].fields = obj1
             Object.keys(newState[action.name].errors).map((val) => {newState[action.name].errors[val] = ""})
-            newState[action.name].errors = {}
+            // newState.educationalDetails.errors = {}
             newState[action.name].edit.id = action.id
             break;
 
         case "RESET_FORM":
-                var obj = Object.assign({}, newState[action.data].fields)
-                Object.keys(obj).map((val, id) => { 
-                        if(typeof(obj[val][val]) == "boolean"){obj[val][val] = false}
-                        else {obj[val][val] = ""}})
-                Object.keys(newState[action.data].fields).map((val, id) => {newState[action.data].fields[val].inValid = "false"})
-                newState[action.data].fields = obj
-                newState[action.data].formValid = false;
-                break;
-        case "DELETE_DETAILS":
-            newState[action.name][action.name] = newState[action.name][action.name].filter((item, id) => id !== action.id)
+            console.log("reset", )
+            var obj = JSON.parse(JSON.stringify(newState[action.data].fields));
+            Object.keys(obj).map((val, id) => { 
+                    if(typeof(obj[val][val]) == "boolean"){obj[val][val] = false}
+                    else {obj[val][val] = ""}})
+            Object.keys(newState[action.data].fields).map((val, id) => {newState[action.data].fields[val].inValid = "false"})
+            newState[action.data].fields = obj
+            newState[action.data].formValid = false;
+            newState[action.name].errors = newState[action.name].errorsdup
+            break;
+
+        case "EDIT_ACTION":
+            newState[action.data].edit.id = null
+            newState[action.name].errors = newState[action.name].errorsdup
             break;
 
         default :

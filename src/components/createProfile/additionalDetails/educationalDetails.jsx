@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import $ from "jquery";
 
 import Input from '../../input/input'
 
@@ -42,7 +43,23 @@ class EducationalDetails extends React.Component {
         this.props.changeState(field, obj)
     }
 
+    handleSubmit() {
+        console.log(this.props.formValid)
+        if (this.props.formValid){
+            this.props.addDetails(this.props.fields)
+            $('#enterDetails').click();
+        } else {
+            this.forceUpdate()
+        }
+    }
+
+    componentWillUnmount = () => {
+        console.log("Unmounted")
+        this.props.editAction()
+    }
+
     render(){
+        console.log(this.props.fields)
         return(
             <div class="modal-content">
                             <div class="modal-header">
@@ -128,9 +145,8 @@ class EducationalDetails extends React.Component {
                             </div>
                             <div class="modal-footer">
                             <div class="btn-group NextFormButtons ModalNextFormButtons ">
-                                <button class="common-btn commonOutlineBtn">Reset</button>
-                                <button class="common-btn commonBlueBtn" onClick = {this.props.formValid ? ()=>
-                                 this.props.addDetails(this.props.fields): () => {this.props.checkFormIsValid(); this.forceUpdate()}}>Save</button>
+                                <button class="common-btn commonOutlineBtn" onClick = {() => {this.props.resetForm(); }}>Reset</button>
+                                <button class="common-btn commonBlueBtn" onClick = {() => {this.props.checkFormIsValid(); setTimeout(() => this.handleSubmit(),5)} }>Save</button>
                             </div>
                             </div>
                         </div>
@@ -151,7 +167,9 @@ const mapDispatchToProps = dispatch => {
         changeState : (name,val)=> dispatch({type:"CHANGE_FIELD", name:name, val:val, data : 'educationalDetails'}),
         changeErrorState : (field, val) => dispatch({type : "CHANGE_ERROR_STATE", field : field, val : val, data : 'educationalDetails'}),
         checkFormIsValid : () => dispatch({type: "IS_FORM_VALID", data : 'educationalDetails'}), 
-        addDetails : (fields) => dispatch({type : "ADD_DETAILS", val : fields, data : 'educationalDetails'})
+        addDetails : (fields) => dispatch({type : "ADD_DETAILS", val : fields, data : 'educationalDetails'}),
+        resetForm : () => dispatch({type : "RESET_FORM", data : 'educationalDetails'}),
+        editAction : () => dispatch({type : "EDIT_ACTION", data : "educationalDetails"})
     }
 }
 
