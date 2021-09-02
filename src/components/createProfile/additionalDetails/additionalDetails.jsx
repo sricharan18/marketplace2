@@ -192,7 +192,7 @@ class AdditionalDetails extends React.Component {
                                             </div>
                                           </div> */}
 
-                                          <DetailsPanel id="headingThree" title="WorkHistory"/>
+                                          <DetailsPanel id="headingThree" title="WorkHistory" href="collapseThree"/>
 
 
                                           <div class="panel panel-default">
