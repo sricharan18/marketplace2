@@ -235,7 +235,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         setCategory : (event) => dispatch({type : "CHANGE_CATEGORY", val : event.target.value}),
-        changeState : (name,val)=> dispatch({type:"CHANGE_FIELD",name:name,val:val}),
+        changeState : (name,val)=> dispatch({type:"CHANGE_FIELD",name:name,val:val,data : 'fields'}),
         goToAdditionalDetails : () => dispatch({type: "ADDITIONAL_DETAILS"}),
         changeErrorState : (field, val) => dispatch({type : "CHANGE_ERROR_STATE", field : field, val : val, data : 'fields'}),
         checkFormIsValid : () => dispatch({type: "IS_FORM_VALID", data : 'fields'}), 
