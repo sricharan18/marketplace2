@@ -2,8 +2,32 @@ const initialState = {
     CategorySelected : "HealthCare",
     goToAdditionalDetails : false,
     goToEmploymentDetails : false,
+    modalSelected : '',
+    skills : {
+        skills : ["Python", "Java", "Graphic design"],
+        edit : {id : null}
+    },
+    portfolio : {
+        portfolio : ['url1', 'url2'],
+        edit : {id : null}
+    },
+    employmentQues : {
+        fields : {
+            AvailableFrom : {AvailableFrom : "",},
+            AvailableTill : {AvailableTill : ""},
+            WorkType : {WorkType : ""},
+            EmploymentType : {EmploymentType : ""},
+            WorkLocation : {WorkLocation : ""},
+            LocationPreference : {LocationPreference : ""},
+            WorkingHours : {WorkingHours : ""},
+            Rate : {Rate : ""},
+            RateType : {RateType : ""}
+        },
+        formValid: true,
+    },
     fields:{
-        Name: {Name : 'Charan', inValid : false},
+        fields:{
+        Name: {Name : '', inValid : false},
         Email: {Email : '', inValid : false},
         PhoneNumber: {PhoneNumber : '', inValid : false},
         profilePic: undefined,
@@ -16,6 +40,7 @@ const initialState = {
         Status: {Status : '',},
         Language: {Language : '',},
         CurrentLocation: {CurrentLocation : '',},
+        },
         errors : {
             Name: "Enter valid Name",
             Email: "Enter valid email",
@@ -90,13 +115,69 @@ const initialState = {
         edit : {id : null},
         errors : {
             EmployerName: "Enter valid Name",
+            Designation: "Enter valid Designation",
             StartDate: "Enter valid Date",
-            EndDate: "Enter valid Date"
+            EndDate: "Enter valid Date",
+            WorkLocation: "Enter valid Work Location"
         },
         errorsdup : {
             EmployerName: "Enter valid Name",
+            Designation: "Enter valid Designation",
             StartDate: "Enter valid Date",
-            EndDate: "Enter valid Date"
+            EndDate: "Enter valid Date",
+            WorkLocation: "Enter valid Work Location"
+        },
+        formValid: false,
+    },
+    certifications : {
+        fields:{
+            Name : {Name : "", invalid : "false"},
+            Issuer : {Issuer : "", invalid : "false"},
+            IssueYear : {IssueYear : "", invalid : "false"},
+            ExpiryYear : {ExpiryYear : "", invalid : "false"},
+        },
+        certifications : [{
+            Name : {Name : "UI Design and Conceptualization", invalid : "false"},
+            Issuer : {Issuer : "Layola School Of Design", invalid : "false"},
+            IssueYear : {IssueYear : "2018", invalid : "false"},
+            ExpiryYear : {ExpiryYear : "",invalid : "false"},
+        }],
+        edit : {id : null},
+        errors : {
+            Name: "Enter valid Name",
+            Issuer: "Enter valid Issuer",
+            IssueYear: "Enter valid IssueYear",
+            ExpiryYear: "Enter valid ExpiryYear",
+        },
+        errorsdup : {
+            Name: "Enter valid Name",
+            Issuer: "Enter valid Issuer",
+            IssueYear: "Enter valid IssueYear",
+            ExpiryYear: "Enter valid ExpiryYear",
+        },
+        formValid: false,
+    },
+    recommendations : {
+        fields:{
+            Name : {Name : "", invalid : "false"},
+            Email : {Email : "", invalid : "false"},
+            PhoneNumber : {PhoneNumber : "", invalid : "false"},
+        },
+        recommendations : [{
+            Name : {Name : "Sai", invalid : "false"},
+            Email : {Email : "sai@gmail.com", invalid : "false"},
+            PhoneNumber : {PhoneNumber : "9949132471", invalid : "false"},
+        }],
+        edit : {id : null},
+        errors : {
+            Name: "Enter valid Name",
+            Email: "",
+            PhoneNumber: "",
+        },
+        errorsdup : {
+            Name: "Enter valid Name",
+            Email: "",
+            PhoneNumber: "",
         },
         formValid: false,
     },
@@ -164,7 +245,7 @@ const reducer = (state = initialState, action) => {
             if (edit !== null){
                 newState[action.data][action.data] = newState[action.data][action.data].map((item, id) => {if(id===edit){return action.val} else{return item}})
                 newState[action.data].edit.id = null
-                newState.educationalDetails.errors = newState.educationalDetails.errorsdup
+                newState[action.data].errors = newState[action.data].errorsdup
             } else {
                 newState[action.data][action.data] = newState[action.data][action.data].concat(action.val)
                 console.log(newState[action.data][action.data])
@@ -185,7 +266,8 @@ const reducer = (state = initialState, action) => {
             break;
 
         case "RESET_FORM":
-            console.log("reset", )
+            if(action.data)
+            {
             var obj = JSON.parse(JSON.stringify(newState[action.data].fields));
             Object.keys(obj).map((val, id) => { 
                     if(typeof(obj[val][val]) == "boolean"){obj[val][val] = false}
@@ -193,14 +275,20 @@ const reducer = (state = initialState, action) => {
             Object.keys(newState[action.data].fields).map((val, id) => {newState[action.data].fields[val].inValid = "false"})
             newState[action.data].fields = obj
             newState[action.data].formValid = false;
-            newState[action.name].errors = newState[action.name].errorsdup
+            newState[action.data].errors = newState[action.data].errorsdup
+            }
             break;
 
         case "EDIT_ACTION":
+            if(action.data)
+            {
             newState[action.data].edit.id = null
-            newState[action.name].errors = newState[action.name].errorsdup
+            newState[action.data].errors = newState[action.data].errorsdup
+            }
             break;
-
+        case "CHANGE_MODAL":
+            newState.modalSelected=action.modal;
+            break
         default :
             break;
     }

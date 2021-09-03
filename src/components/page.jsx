@@ -1,7 +1,10 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route,BrowserRouter,Switch } from 'react-router-dom';
 
 import CreateProfile from './createProfile/createProfile';
+import AdditionalDetails from './createProfile/additionalDetails/additionalDetails';
+import BasicDetails from './createProfile/basicDetails';
+import EmploymentQues from './createProfile/employmentQues';
 
 class Page extends React.Component{
     // constructor(props)
@@ -12,10 +15,13 @@ class Page extends React.Component{
     
     render(){
     return (
-        <div>
-            <Route path="/createProfile" exact component={CreateProfile} />
-
-        </div>
+        <BrowserRouter>
+            <Switch>
+                <Route path="/createProfile/basicDetails" component={BasicDetails} />
+                <Route path="/createProfile/additionalDetails" exact component={AdditionalDetails} />
+                <Route path="/createProfile/employmentDetails" exact component={EmploymentQues} />
+            </Switch>
+        </BrowserRouter>
     )
     }
 }

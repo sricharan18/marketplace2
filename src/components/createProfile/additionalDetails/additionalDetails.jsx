@@ -1,14 +1,23 @@
 import React from 'react';
 import './additionalDetails.css';
+import { Link } from 'react-router-dom';
 
 import Modal from './modal';
 import DetailsPanel from './detailsPanel';
-
+import SideNav from '../sideNav';
+import Header from '../../header/header';
+import DetailsPanel2 from './detailsPanel2'
 
 class AdditionalDetails extends React.Component {
 
     render(){
         return (
+          <div>
+        <Header />
+        <section className="mainbgColor create-profile-section">
+        <div className="container-fluid">
+            <div className="row">
+                <SideNav additionalPage = {this.props.additionalPage} employmentPage = {this.props.employmentPage}/>
             <div class="col-md-9">
                     <div class="CreateProfileForm">
                         <div class="profileHeadSec">
@@ -122,10 +131,10 @@ class AdditionalDetails extends React.Component {
                                             </div>
                                           </div> */}
 
-                                          <DetailsPanel id="headingOne" title="Educational Details" href="collapseOne"/>
+                                          <DetailsPanel id="headingOne" title="Educational Details" href="collapseOne" modal="educationalDetails"/>
 
-
-                                          <div class="panel panel-default">
+                                          <DetailsPanel id="headingTwo" title="Certifications" href="collapseTwo" modal="certifications"/>
+                                          {/*<div class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingTwo" >
                                               <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                 <a class="collapsed" href="#">
@@ -161,10 +170,10 @@ class AdditionalDetails extends React.Component {
                                                 </div>
                                                </div>
                                             </div>
-                                          </div>
+                                        </div>
 
 
-                                           {/*<div class="panel panel-default">
+                                           <div class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingThree" >
                                               <h4 class="panel-title" href="#collapseThree" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" aria-controls="collapseThree">
                                                 <a class="collapsed">
@@ -192,10 +201,12 @@ class AdditionalDetails extends React.Component {
                                             </div>
                                         </div> */}
 
-                                          <DetailsPanel id="headingThree" title="WorkHistory" href="collapseThree"/>
+                                          <DetailsPanel id="headingThree" title="WorkHistory" href="collapseThree" modal="workDetails"/>
 
-
-                                          <div class="panel panel-default">
+                                          <DetailsPanel2 id="headingFour" title="Skills" href="collapseFour" data="skills" placeholder="Enter skills"/>
+ 
+                                          <DetailsPanel2 id="headingFive" title="Portfolio" href="collapseFive" data="portfolio" placeholder="Enter URL"/>
+                                          {/* <div class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingFour" >
                                               <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                                 <a class="collapsed">
@@ -263,9 +274,9 @@ class AdditionalDetails extends React.Component {
 
                                               </div>
                                             </div>
-                                          </div>
-
-                                          <div class="panel panel-default">
+                                          </div> */}
+                                          <DetailsPanel id="headingSix" title="Recommendations" href="collapseSix" modal="recommendations"/>
+                                          {/*<div class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingSix" >
                                               <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
                                                 <a class="collapsed">
@@ -292,7 +303,7 @@ class AdditionalDetails extends React.Component {
 
                                               </div>
                                             </div>
-                                          </div>
+                                      </div>*/}
                                         </div>
                                       </div>
                                     </div>
@@ -303,7 +314,7 @@ class AdditionalDetails extends React.Component {
                     </div>
                     <div class="btn-group NextFormButtons">
                         <button class="common-btn commonOutlineBtn">Draft</button>
-                        <button class="common-btn commonBlueBtn">Save & Next</button>
+                        <Link to="/createProfile/employmentDetails"><button class="common-btn commonBlueBtn">Save & Next</button></Link>
                     </div>
 
                     <div class="modal fade" id="enterDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -312,7 +323,10 @@ class AdditionalDetails extends React.Component {
                         </div>
                     </div>
                 </div>
-
+                </div>
+            </div>
+        </section>
+        </div>
                     
         )
     }

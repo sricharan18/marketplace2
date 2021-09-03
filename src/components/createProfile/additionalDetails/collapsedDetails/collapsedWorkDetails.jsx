@@ -16,7 +16,7 @@ class CollapsedWorkDetails extends React.Component{
                     </div>
 
                     <div class="actionBtns">
-                    <a href="#" class="editDetails" data-toggle="modal" data-target="#enterDetails" onClick={() => {this.props.editDetails(this.props.id);}}>
+                    <a href="#" class="editDetails" data-toggle="modal" data-target="#enterDetails" onClick={() => {this.props.editDetails(this.props.id);this.props.changeModal(this.props.modal)}}>
                     <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="#007BFF">
                         <path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                     </svg>
@@ -42,7 +42,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         editDetails : (id) => dispatch({type : "EDIT_DETAILS", id : id, name:'workDetails'}),
-        deleteDetails : (id) => dispatch({type : "DELETE_DETAILS", id : id,name:'workDetails'})
+        deleteDetails : (id) => dispatch({type : "DELETE_DETAILS", id : id,name:'workDetails'}),
+        changeModal : (modal)=> dispatch({type:"CHANGE_MODAL", modal : modal})
     }
 }
 

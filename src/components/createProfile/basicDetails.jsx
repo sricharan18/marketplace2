@@ -1,9 +1,12 @@
 import React from 'react';
 import './createprofile.css';
 import { connect } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 
 import UploadImage from '../uploadImage/uploadImage';
-import Input from '../input/input'
+import Input from '../input/input';
+import SideNav from './sideNav';
+import Header from '../header/header';
 
 class BasicDetails extends React.Component{
     sub_options = null
@@ -53,6 +56,14 @@ class BasicDetails extends React.Component{
             this.props.changeState(field, {field : event.target.value, inValid : !k})
         }
     }
+    handleSubmit() {
+        console.log(this.props.formValid)
+        if (this.props.formValid){
+             
+        } else {
+            this.forceUpdate()
+        }
+    }
     render(){
         if (this.props.sel === "HealthCare") {
             this.sub_options = ["Administration", "Nursing", "Physician", "Surgeon", "Technical", "Others"]
@@ -68,7 +79,12 @@ class BasicDetails extends React.Component{
                 elementType="select"
                 options = {this.sub_options} change={this.handleChange.bind(this,"Sub_Category", {})}/>
     return (
-
+        <div>
+        <Header />
+        <section className="mainbgColor create-profile-section">
+        <div className="container-fluid">
+            <div className="row">
+                <SideNav additionalPage = {this.props.additionalPage} employmentPage = {this.props.employmentPage}/>
                     <div className="col-md-9">
                         <div className="CreateProfileForm">
                             <div className="profileHeadSec">
@@ -210,14 +226,20 @@ class BasicDetails extends React.Component{
                         </div>
                         <div className="btn-group NextFormButtons">
                             <button className="common-btn commonOutlineBtn">Draft</button>
-                            <button className="common-btn commonBlueBtn" 
-                            onClick = {this.props.formValid ? ()=>
+                             {/* <button className="common-btn commonBlueBtn" onClick = {this.props.formValid ? ()=>
                                 {localStorage.setItem("Basic Details",JSON.stringify(this.props.fields))
-                               this.props.goToAdditionalDetails(); }: () => {this.props.checkFormIsValid(); this.forceUpdate()}}>
-                                Save & Next
-                            </button>
+                               this.props.goToAdditionalDetails();<Redirect to="/createProfile/additionalDetails" />} : () => {this.props.checkFormIsValid(); this.forceUpdate()}}>Save & Next</button>
+                            <Redirect to="/createProfile/additionalDetails" /> */}
+                            {this.props.formValid ?localStorage.setItem("Basic Details",JSON.stringify(this.props.fields))|| <Redirect push={true} to="/createProfile/additionalDetails"></Redirect>:<button className="common-btn commonBlueBtn" onClick = {() => {this.props.checkFormIsValid(); setTimeout(() => this.handleSubmit(),5)}}>Save & Next</button>}
+                            {/* <button className="common-btn commonBlueBtn" onClick = {this.props.formValid ? ()=>
+                                {localStorage.setItem("Basic Details",JSON.stringify(this.props.fields))
+                               this.props.goToAdditionalDetails(); }: () => {this.props.checkFormIsValid(); this.forceUpdate()}}>Save & Next</button> */}
                         </div>
                     </div>
+                    </div>
+            </div>
+        </section>
+        </div>
         
     )
     }
@@ -226,7 +248,7 @@ class BasicDetails extends React.Component{
 const mapStateToProps = state => {
     return {
         sel : state.CategorySelected,
-        fields: state.fields,
+        fields: state.fields.fields,
         errors : state.fields.errors,
         formValid : state.fields.formValid,
     }

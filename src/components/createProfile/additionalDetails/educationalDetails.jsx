@@ -13,7 +13,7 @@ class EducationalDetails extends React.Component {
         }
 
         if (rules.name) {
-            isValid = /^[A-Za-z]+$/.test(value) && isValid;
+            isValid = /^[A-Za-z\s]+$/.test(value) && isValid;
         }
 
         if (rules.year) {

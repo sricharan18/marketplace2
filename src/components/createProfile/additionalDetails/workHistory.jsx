@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import $ from "jquery";
 
 import Input from '../../input/input';
 
@@ -11,11 +12,11 @@ class WorkHistory extends React.Component {
         }
 
         if (rules.name) {
-            isValid = /^[A-Za-z]+$/.test(value) && isValid;
+            isValid = /^[A-Za-z\s]+$/.test(value) && isValid;
         }
 
         if (rules.startDate) {
-            if(Number(this.props.dob.split("-")[0])+15 <= Number(value.split("-")[0]))
+            if(Number('2000-06-16'.split("-")[0])+15 <= Number(value.split("-")[0]))
             {
                 isValid=true;
             }
@@ -34,7 +35,15 @@ class WorkHistory extends React.Component {
         }
         return isValid
     }
-
+    handleSubmit() {
+        console.log(this.props.formValid)
+        if (this.props.formValid){
+            this.props.addDetails(this.props.fields)
+            $('#enterDetails').click();
+        } else {
+            this.forceUpdate()
+        }
+    }
     handleChange(field, rules, event)
     {
         let k = this.handleValidation(event.target.value, rules)
@@ -80,7 +89,7 @@ class WorkHistory extends React.Component {
                                 placeholder : "Enter Designation", 
                                 type:"text"}}
                         value={this.props.fields.Designation.Designation}
-                        change={this.handleChange.bind(this,"Designation" ,{})}
+                        change={this.handleChange.bind(this,"Designation" ,{required : true})}
                         inValid = {this.props.fields.Designation.inValid}
                         error = {this.props.errors.Designation}
                         elementType="input" 
@@ -131,7 +140,7 @@ class WorkHistory extends React.Component {
                                 placeholder : "Enter Work Location", 
                                 type:"text"}}
                         value={this.props.fields.WorkLocation.WorkLocation}
-                        change={this.handleChange.bind(this,"WorkLocation" ,{required : true, workLocation : true})}
+                        change={this.handleChange.bind(this,"WorkLocation" ,{required : true,})}
                         inValid = {this.props.fields.WorkLocation.inValid}
                         error = {this.props.errors.WorkLocation}
                         elementType="input" 
@@ -141,12 +150,9 @@ class WorkHistory extends React.Component {
                 </div>
                 <div class="modal-footer">
                 <div class="btn-group NextFormButtons ModalNextFormButtons ">
-                    <button class="common-btn commonOutlineBtn" onClick={this.props.resetDetails}>Reset</button>
+                    <button class="common-btn commonOutlineBtn" onClick={this.props.resetForm}>Reset</button>
                     <button class="common-btn commonBlueBtn" 
-                    onClick = {this.props.formValid ? ()=>
-                        {
-                            this.props.addWorkDetails(this.props.fields)
-                        }: () => {this.props.checkFormIsValid(); this.forceUpdate()}}>Save</button>
+                    onClick = {() => {this.props.checkFormIsValid(); setTimeout(() => this.handleSubmit(),5)}}>Save</button>
                 </div>
                 </div>
             </div>
@@ -157,7 +163,6 @@ class WorkHistory extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        dob:state.fields.DOB.DOB,
         fields:state.workDetails.fields,
         errors : state.workDetails.errors,
         formValid : state.workDetails.formValid,
@@ -169,8 +174,9 @@ const mapDispatchToProps = dispatch => {
         changeState : (name,val)=> dispatch({type:"CHANGE_FIELD",name:name,val:val, data:'workDetails'}),
         changeErrorState : (field, val) => dispatch({type : "CHANGE_ERROR_STATE", field : field, val : val, data : 'workDetails'}),
         checkFormIsValid : () => dispatch({type: "IS_FORM_VALID", data : 'workDetails'}), 
-        addWorkDetails : (val) => dispatch({type: "ADD_DETAILS", data : 'workDetails', val:val}),
-        resetDetails : () => dispatch({type:"RESET_FORM", data : 'workDetails'})
+        addDetails : (val) => dispatch({type: "ADD_DETAILS", data : 'workDetails', val:val}),
+        resetForm : () => dispatch({type:"RESET_FORM", data : 'workDetails'}),
+        editAction : () => dispatch({type : "EDIT_ACTION", data : "workDetails"})
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(WorkHistory)
