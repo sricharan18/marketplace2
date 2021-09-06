@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import $ from "jquery";
+import axios from 'axios';
 
 import Input from '../../input/input';
 
@@ -25,10 +26,39 @@ class Recommendations extends React.Component {
         }
         return isValid
     }
-    handleSubmit() {
+    handleSubmit =async (editDetailsID) => {
         console.log(this.props.formValid)
         if (this.props.formValid){
-            this.props.addDetails(this.props.fields)
+            var data = {
+                name: this.props.fields.Name.Name,
+                email: this.props.fields.Email.Email,
+                phone: this.props.fields.PhoneNumber.PhoneNumber,
+            }
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ this.props.token
+              }
+            console.log(data)
+              
+            // this.props.addDetails(this.props.fields)
+            data["worker"] = {id : localStorage.getItem("WorkerID")}
+
+            if(editDetailsID.id !== null){
+                data["id"] = editDetailsID.id
+                 await axios.put('http://localhost:9001/api/refereces/' + editDetailsID.id, data, {headers : headers})
+                .then((response) => {console.log(response)}).catch((e) => console.log(e))
+            } else {
+                await axios.post('http://localhost:9001/api/refereces', data, {headers : headers})
+                .then((response) => {console.log(response)}).catch((e) => console.log(e))
+
+                this.props.addDetails(this.props.fields)
+            }
+
+            axios.get('http://localhost:9001/api/refereces/worker/'+ localStorage.getItem("WorkerID")).then((res) => 
+            {
+                this.props.mapDatabaseToLocal(res.data)
+            })
             $('#enterDetails').click();
         } else {
             this.forceUpdate()
@@ -101,7 +131,7 @@ class Recommendations extends React.Component {
                 <div class="btn-group NextFormButtons ModalNextFormButtons ">
                     <button class="common-btn commonOutlineBtn" onClick={this.props.resetForm}>Reset</button>
                     <button class="common-btn commonBlueBtn" 
-                    onClick = {() => {this.props.checkFormIsValid(); setTimeout(() => this.handleSubmit(),5)}}>Save</button>
+                    onClick = {() => {this.props.checkFormIsValid(); setTimeout(() => this.handleSubmit(this.props.editDetailsID),5)}}>Save</button>
                 </div>
                 </div>
             </div>
@@ -115,6 +145,8 @@ const mapStateToProps = state => {
         fields:state.recommendations.fields,
         errors : state.recommendations.errors,
         formValid : state.recommendations.formValid,
+        editDetailsID : state.recommendations.edit,
+        token: state.token
     }
 }
 
@@ -125,7 +157,8 @@ const mapDispatchToProps = dispatch => {
         checkFormIsValid : () => dispatch({type: "IS_FORM_VALID", data : 'recommendations'}), 
         addDetails : (val) => dispatch({type: "ADD_DETAILS", data : 'recommendations', val:val}),
         resetForm : () => dispatch({type:"RESET_FORM", data : 'recommendations'}),
-        editAction : () => dispatch({type : "EDIT_ACTION", data : "recommendations"})
+        editAction : () => dispatch({type : "EDIT_ACTION", data : "recommendations"}),
+        mapDatabaseToLocal : (res) => dispatch({type : "MAP_DATABASE_TO_LOCAl", name:'recommendations', res: res})
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Recommendations)

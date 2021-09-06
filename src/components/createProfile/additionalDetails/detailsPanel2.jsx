@@ -1,15 +1,58 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import CollapsedSkills from './collapsedDetails/collapsedSkills';
 
 
 class DetailsPanel2 extends React.Component{
 
-    handleKeyPress = (event) => {
+    handleKeyPress = async (event) => {
         // event.preventDefault()
         if (event.key === 'Enter') {
-            this.props.addDetails(event.target.value, this.props.data)
+
+            var data = null
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ this.props.token
+              }
+            if(this.props.data === "skills"){
+                data = {
+                    skillName: event.target.value,
+                    worker : {
+                        id: localStorage.getItem("WorkerID"),
+                    }
+                }            
+                
+
+                await axios.post('http://localhost:9001/api/skills-masters', data, {headers : headers})
+                .then((response) => {console.log(response)}).catch((e) => console.log(e))
+
+                axios.get('http://localhost:9001/api/skills-masters/worker/'+localStorage.getItem("WorkerID")).then((res) => 
+                {
+                    this.props.mapDatabaseToLocal(res.data, this.props.data)
+                })
+
+            } else {
+                data = {
+                    portfolioURL: event.target.value,
+                    worker : {
+                        id: localStorage.getItem("WorkerID"),
+                    }
+                }
+
+                await axios.post('http://localhost:9001/api/portfolios', data, {headers : headers})
+                .then((response) => {console.log(response)}).catch((e) => console.log(e))
+
+                axios.get('http://localhost:9001/api/portfolios/worker/'+localStorage.getItem("WorkerID")).then((res) => 
+                {
+                    this.props.mapDatabaseToLocal(res.data, this.props.data)
+                })
+            }
+            // this.props.addDetails(event.target.value, this.props.data) 
+
+
           }
     }
 
@@ -19,9 +62,9 @@ class DetailsPanel2 extends React.Component{
         var variable = null
 
         if(this.props.data === "skills") {
-            variable = this.props.skill.map((item, id) => (<CollapsedSkills item={item} key={id} id={id} data={this.props.data}/>))
+            variable = this.props.skill.map((item, id) => (<CollapsedSkills item={item.item} key={id} id={item.id} data={this.props.data}/>))
         } else {
-            variable = this.props.portfolio.map((item, id) => (<CollapsedSkills item={item} key={id} id={id} data={this.props.data}/>))
+            variable = this.props.portfolio.map((item, id) => (<CollapsedSkills item={item.item} key={id} id={item.id} data={this.props.data}/>))
         }
 
         return (
@@ -61,12 +104,14 @@ const mapStateToProps = state => {
     return {
         skill : state.skills.skills,
         portfolio : state.portfolio.portfolio,
+        token : state.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         addDetails : (fields, data) => dispatch({type : "ADD_DETAILS", val : fields, data : data}),
+        mapDatabaseToLocal : (res, name) => dispatch({type : "MAP_DATABASE_TO_LOCAl", name: name, res: res})
     }
 }
 

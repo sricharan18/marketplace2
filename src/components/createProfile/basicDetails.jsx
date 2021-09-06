@@ -1,7 +1,8 @@
 import React from 'react';
 import './createprofile.css';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory, withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 import UploadImage from '../uploadImage/uploadImage';
 import Input from '../input/input';
@@ -53,17 +54,65 @@ class BasicDetails extends React.Component{
             this.props.changeState(field,JSON.stringify(event.target.files[0], replacer))
         }
         else{
-            this.props.changeState(field, {field : event.target.value, inValid : !k})
+            var obj = {}
+            obj[field] = event.target.value 
+            obj['inValid'] = !k
+            this.props.changeState(field, obj)
         }
     }
-    handleSubmit() {
+    handleSubmit = async () => {
         console.log(this.props.formValid)
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ this.props.token
+          }
+
+        console.log(headers)
+
         if (this.props.formValid){
-             
+            var data = {
+                firstName: this.props.fields.Name.Name,
+                email: this.props.fields.Email.Email,
+                primaryPhone: this.props.fields.PhoneNumber.PhoneNumber,
+                gender: this.props.fields.Gender.Gender,
+                dateOfBirth: this.props.fields.DOB.DOB,
+                idProof: this.props.fields.ID_Proof.ID_Proof,
+                idCode: this.props.fields.ID_Code.ID_Code,
+                status: this.props.fields.Status.Status,
+                language: this.props.fields.Language.Language,
+                workerLocation: this.props.fields.CurrentLocation.CurrentLocation,
+                lastName : "",
+
+            }
+              
+            console.log(data)
+            
+            await axios.post('http://localhost:9001/api/workers', data, {headers : headers})
+            .then((response) => {console.log(response); localStorage.setItem("WorkerID", response.data.id)}).catch((e) => console.log(e))
+
+            
+
+            axios.post('http://localhost:9001/api/categories', {isParent : true, name : this.props.fields.Category},
+                {headers : headers})
+            .then((response) => 
+                
+                {
+                console.log(response)
+                axios.post('http://localhost:9001/api/categories', {isParent : false, name : this.props.fields.Sub_Category, parent : response.data},
+                    {headers : headers})
+                .then((response) => {console.log(response)}).catch((e) => console.log(e))  
+            }).catch((e) => console.log(e))  
+
+
+            this.props.history.push('/createProfile/additionalDetails')
+            this.props.onFilled()
+
         } else {
             this.forceUpdate()
         }
     }
+    
     render(){
         if (this.props.sel === "HealthCare") {
             this.sub_options = ["Administration", "Nursing", "Physician", "Surgeon", "Technical", "Others"]
@@ -75,7 +124,7 @@ class BasicDetails extends React.Component{
 
         const subCategory = <Input 
                 divClass="form-group col-md-4" label="Sub-Category" 
-                config = {{className :"form-control" ,}}
+                config = {{className :"form-control form-select" ,}}
                 elementType="select"
                 options = {this.sub_options} change={this.handleChange.bind(this,"Sub_Category", {})}/>
     return (
@@ -84,7 +133,7 @@ class BasicDetails extends React.Component{
         <section className="mainbgColor create-profile-section">
         <div className="container-fluid">
             <div className="row">
-                <SideNav additionalPage = {this.props.additionalPage} employmentPage = {this.props.employmentPage}/>
+            <SideNav page='basicDetails' additionalPage = {this.props.additionalPage} employmentPage = {this.props.employmentPage}/>
                     <div className="col-md-9">
                         <div className="CreateProfileForm">
                             <div className="profileHeadSec">
@@ -100,6 +149,7 @@ class BasicDetails extends React.Component{
                                             config = {{className :"form-control" ,
                                                     placeholder : "Enter your Name", 
                                                     type:"name"}}
+                                            value = {this.props.fields.Name.Name}
                                             change={this.handleChange.bind(this,"Name" ,{required : true, name : true})}
                                             inValid = {this.props.fields.Name.inValid}
                                             error = {this.props.errors.Name}
@@ -113,6 +163,7 @@ class BasicDetails extends React.Component{
                                                     placeholder : "user@gmail.com", 
                                                     type:"text"}}
                                                 elementType="input" 
+                                                value = {this.props.fields.Email.Email}
                                                 change={this.handleChange.bind(this,"Email" ,
                                                 {required : true, email : true})} 
                                                 error = {this.props.errors.Email}
@@ -125,6 +176,7 @@ class BasicDetails extends React.Component{
                                                     placeholder : "+91 XXX-XXX-XXXX", 
                                                     type:"text"}}
                                                 elementType="input" 
+                                                value = {this.props.fields.PhoneNumber.PhoneNumber}
                                                 inValid = {this.props.fields.PhoneNumber.inValid}
                                                 error = {this.props.errors.PhoneNumber}
                                                 change={this.handleChange.bind(this,"PhoneNumber",{required : true, mobile : true})}/>
@@ -134,15 +186,15 @@ class BasicDetails extends React.Component{
                                                 <label htmlFor="inputGender">Gender</label>
                                             <div className="RadioBtn">
                                                     <div className="form-check form-check-inline">
-                                                        <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Male" onChange={this.handleChange.bind(this,"Gender", {})}/>
+                                                        <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Male" checked={this.props.fields.Gender.Gender=== "Male"} onChange={this.handleChange.bind(this,"Gender", {})}/>
                                                         <label className="form-check-label" htmlFor="inlineRadio1">Male</label>
                                                     </div>
                                                     <div className="form-check form-check-inline">
-                                                        <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Female" onChange={this.handleChange.bind(this,"Gender", {})}/>
+                                                        <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Female" checked={this.props.fields.Gender.Gender === "Female"} onChange={this.handleChange.bind(this,"Gender", {})}/>
                                                         <label className="form-check-label" htmlFor="inlineRadio2">Female</label>
                                                     </div>
                                                     <div className="form-check form-check-inline">
-                                                        <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Other" onChange={this.handleChange.bind(this,"Gender", {})}/>
+                                                        <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Other" checked={this.props.fields.Gender.Gender === "Other"} onChange={this.handleChange.bind(this,"Gender", {})}/>
                                                         <label className="form-check-label" htmlFor="inlineRadio2">Other</label>
                                                     </div>
                                             </div>
@@ -157,6 +209,7 @@ class BasicDetails extends React.Component{
                                         config = {{className :"form-control" , 
                                                     type:"date"}}
                                         elementType="input" 
+                                        value = {this.props.fields.DOB.DOB}
                                         change={this.handleChange.bind(this,"DOB",{required : true})}
                                         inValid = {this.props.fields.DOB.inValid}
                                         error = {this.props.errors.DOB}/>
@@ -166,6 +219,7 @@ class BasicDetails extends React.Component{
                                         config = {{className :"form-control form-select" ,}}
                                         elementType="select"
                                         options = {["HealthCare", "Blue Collar", "IT"] }
+                                        value = {this.props.fields.Category}
                                         change={this.props.setCategory}/>
 
                                         { subCategory }
@@ -176,9 +230,10 @@ class BasicDetails extends React.Component{
                                         <div className="form-row col-md-4">
                                             <Input 
                                             divClass="form-group col-md-9" label="ID Proof" 
-                                            config = {{className :"form-control" ,}}
+                                            config = {{className :"form-control form-select" ,}}
                                             elementType="select"
                                             options = {["Select", "SSN", "Passport"] }
+                                            value = {this.props.fields.ID_Proof.ID_Proof}
                                             inValid = {this.props.fields.ID_Proof.inValid}
                                             change={this.handleChange.bind(this,"ID_Proof",{select : true})} />
 
@@ -186,6 +241,7 @@ class BasicDetails extends React.Component{
                                             divClass="form-group col-md-3" label="ID Code" 
                                             config = {{className :"form-control" , type: "text"}}
                                             elementType="input"
+                                            value = {this.props.fields.ID_Code.ID_Code}
                                             inValid = {this.props.fields.ID_Code.inValid}
                                             change={this.handleChange.bind(this,"ID_Code",{required : true})}
                                              />
@@ -193,19 +249,21 @@ class BasicDetails extends React.Component{
                                         </div>
                                             <Input 
                                             divClass="form-group col-md-4" label="Status" 
-                                            config = {{className :"form-control" ,}}
+                                            config = {{className :"form-control form-select" ,}}
                                             elementType="select"
                                             options = {["Select", "Blue Collar", "IT"] }
+                                            value = {this.props.fields.Status.Status}
                                             inValid = {this.props.fields.Status.inValid}
                                             change={this.handleChange.bind(this,"Status",{select : true})}
                                              />
 
                                             <Input 
                                             divClass="form-group col-md-4" label="Language" 
-                                            config = {{className :"form-control" ,}}
+                                            config = {{className :"form-control form-select" ,}}
                                             elementType="select" 
                                             options = {["Select", "English", "Physician", "Surgeon", 
                                             "Technical", "Others"] }
+                                            value = {this.props.fields.Language.Language}
                                             inValid = {this.props.fields.Language.inValid}
                                             change={this.handleChange.bind(this,"Language",{select : true})}/>
                                         
@@ -213,7 +271,7 @@ class BasicDetails extends React.Component{
 
                                     <Input 
                                     divClass="form-group" label="Current Location" 
-                                    config = {{className :"form-control" ,}}
+                                    config = {{className :"form-control form-select" ,}}
                                     elementType="select" name="Location"
                                     options = {["Select", "English", "Physician", "Surgeon", 
                                     "Technical", "Others"] }
@@ -226,14 +284,7 @@ class BasicDetails extends React.Component{
                         </div>
                         <div className="btn-group NextFormButtons">
                             <button className="common-btn commonOutlineBtn">Draft</button>
-                             {/* <button className="common-btn commonBlueBtn" onClick = {this.props.formValid ? ()=>
-                                {localStorage.setItem("Basic Details",JSON.stringify(this.props.fields))
-                               this.props.goToAdditionalDetails();<Redirect to="/createProfile/additionalDetails" />} : () => {this.props.checkFormIsValid(); this.forceUpdate()}}>Save & Next</button>
-                            <Redirect to="/createProfile/additionalDetails" /> */}
-                            {this.props.formValid ?localStorage.setItem("Basic Details",JSON.stringify(this.props.fields))|| <Redirect push={true} to="/createProfile/additionalDetails"></Redirect>:<button className="common-btn commonBlueBtn" onClick = {() => {this.props.checkFormIsValid(); setTimeout(() => this.handleSubmit(),5)}}>Save & Next</button>}
-                            {/* <button className="common-btn commonBlueBtn" onClick = {this.props.formValid ? ()=>
-                                {localStorage.setItem("Basic Details",JSON.stringify(this.props.fields))
-                               this.props.goToAdditionalDetails(); }: () => {this.props.checkFormIsValid(); this.forceUpdate()}}>Save & Next</button> */}
+                            <button className="common-btn commonBlueBtn" onClick = {() => {this.props.checkFormIsValid(); setTimeout(() => this.handleSubmit(),5)}}>Save & Next</button>
                         </div>
                     </div>
                     </div>
@@ -251,6 +302,7 @@ const mapStateToProps = state => {
         fields: state.fields.fields,
         errors : state.fields.errors,
         formValid : state.fields.formValid,
+        token: state.token
     }
 }
 
@@ -261,6 +313,8 @@ const mapDispatchToProps = dispatch => {
         goToAdditionalDetails : () => dispatch({type: "ADDITIONAL_DETAILS"}),
         changeErrorState : (field, val) => dispatch({type : "CHANGE_ERROR_STATE", field : field, val : val, data : 'fields'}),
         checkFormIsValid : () => dispatch({type: "IS_FORM_VALID", data : 'fields'}), 
+        onFilled : () => dispatch({type: "ON_FILLED", data : 'basic'}),
+        // workerId: (id) => dispatch({type : "SET_WORKER_ID", id : id})
     }
 }
 

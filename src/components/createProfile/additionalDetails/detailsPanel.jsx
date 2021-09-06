@@ -26,7 +26,7 @@ class DetailsPanel extends React.Component {
                 <div id={this.props.href} class="panel-collapse collapse in" role="tabpanel" aria-labelledby={this.props.id}>
                 <div class="panel-body">
                 
-                {this.props.fields.map((val,id) => (<CollapsedEducation val = {val} key={id} id={id} modal={this.props.modal}/>))}
+                {this.props.fields.map((val,id) => (<CollapsedEducation val = {val} key={id} id={val.id} modal={this.props.modal}/>))}
 
                 </div>
             </div>}
@@ -34,7 +34,7 @@ class DetailsPanel extends React.Component {
                 <div id={this.props.href} class="panel-collapse collapse in" role="tabpanel" aria-labelledby={this.props.id}>
                 <div class="panel-body">
                 
-                {this.props.certificationFields.map((val,id) => (<CollapsedCertifications val = {val} key={id} id={id} modal={this.props.modal}/>))}
+                {this.props.certificationFields.map((val,id) => (<CollapsedCertifications val = {val} key={id} id={val.id} modal={this.props.modal}/>))}
 
                 </div>
             </div>}
@@ -42,7 +42,7 @@ class DetailsPanel extends React.Component {
             <div id={this.props.href} class="panel-collapse collapse in" role="tabpanel" aria-labelledby={this.props.id}>
                 <div class="panel-body">
                 
-                {this.props.workDetailsFields.map((val,id) => (<CollapsedWorkDetails val = {val} key={id} id={id} modal={this.props.modal}/>))}
+                {this.props.workDetailsFields.map((val,id) => (<CollapsedWorkDetails val = {val} key={id} id={val.id} modal={this.props.modal}/>))}
 
                 </div>
             </div>}
@@ -50,7 +50,7 @@ class DetailsPanel extends React.Component {
             <div id={this.props.href} class="panel-collapse collapse in" role="tabpanel" aria-labelledby={this.props.id}>
                 <div class="panel-body">
                 
-                {this.props.recommendationFields.map((val,id) => (<CollapsedRecommendations val = {val} key={id} id={id} modal={this.props.modal}/>))}
+                {this.props.recommendationFields.map((val,id) => (<CollapsedRecommendations val = {val} key={id} id={val.id} modal={this.props.modal}/>))}
 
                 </div>
             </div>}

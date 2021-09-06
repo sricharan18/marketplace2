@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import $ from "jquery";
+import axios from "axios";
 
 import Input from '../../input/input'
 
@@ -43,23 +44,50 @@ class EducationalDetails extends React.Component {
         this.props.changeState(field, obj)
     }
 
-    handleSubmit() {
-        console.log(this.props.formValid)
+    handleSubmit = async (editDetailsID) => {
         if (this.props.formValid){
-            this.props.addDetails(this.props.fields)
+            var data = {
+                degreeName: this.props.fields.Degree.Degree,
+                institute: this.props.fields.University.University,
+                isComplete: this.props.fields.CurrentlyStudying.CurrentlyStudying,
+                yearOfPassing: this.props.fields.PassingYear.PassingYear,
+                marks: this.props.fields.Grade.Grade,
+            }
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ this.props.token
+              }
+            
+            console.log(data)
+
             $('#enterDetails').click();
+
+            if(editDetailsID.id !== null){
+                data["id"] = editDetailsID.id
+                data["worker"] = {id : localStorage.getItem("WorkerID")}
+                await axios.put('http://localhost:9001/api/educations/' + editDetailsID.id, data, {headers : headers})
+                .then((response) => {console.log(response)}).catch((e) => console.log(e))
+            } else {
+                data["worker"] = {id : localStorage.getItem("WorkerID")}
+                await axios.post('http://localhost:9001/api/educations', data, {headers : headers})
+                .then((response) => {console.log(response)}).catch((e) => console.log(e))
+
+                this.props.addDetails(this.props.fields)
+            }
+
+            await axios.get('http://localhost:9001/api/educations/worker/'+ localStorage.getItem("WorkerID")).then((res) => 
+            {
+                this.props.mapDatabaseToLocal(res.data)
+            })
+
+            
         } else {
             this.forceUpdate()
         }
     }
 
-    componentWillUnmount = () => {
-        console.log("Unmounted")
-        this.props.editAction()
-    }
-
     render(){
-        console.log(this.props.fields)
         return(
             <div class="modal-content">
                             <div class="modal-header">
@@ -93,10 +121,7 @@ class EducationalDetails extends React.Component {
                                     error = {this.props.errors.PassingYear}
                                     elementType="input" 
                                     />
-                                    {/* <div class="form-group col-md-6">
-                                    <label for="inputYear">Passing Year</label>
-                                    <input id="inputYear" class="form-control" type="text" placeholder="Enter Passing Year" />
-                                    </div> */}
+                                    
                                     <div class="form-group col-md-6">
                                     <div class="form-check">
                                         <label class="checkBoxContainer">Currently Studying
@@ -121,10 +146,7 @@ class EducationalDetails extends React.Component {
                                     error = {this.props.errors.University}
                                     elementType="input" 
                                     />
-                                {/* <div class="form-group col-md-6">
-                                <label for="inputUniversity">University</label>
-                                <input id="inputUniversity" class="form-control" type="text" placeholder="Enter University Name" />
-                                </div> */}
+
                                 <Input 
                                     divClass="form-group col-md-6" label="Grade" 
                                     config = {{className :"form-control" ,
@@ -136,17 +158,13 @@ class EducationalDetails extends React.Component {
                                     error = {this.props.errors.Grade}
                                     elementType="input" 
                                     />
-                                {/* <div class="form-group col-md-6">
-                                <label for="inputGrade">Grade</label>
-                                <input id="inputGrade" class="form-control" type="text" placeholder="Enter Grade" />
-                                </div> */}
                             </div>
                             
                             </div>
                             <div class="modal-footer">
                             <div class="btn-group NextFormButtons ModalNextFormButtons ">
                                 <button class="common-btn commonOutlineBtn" onClick = {() => {this.props.resetForm(); }}>Reset</button>
-                                <button class="common-btn commonBlueBtn" onClick = {() => {this.props.checkFormIsValid(); setTimeout(() => this.handleSubmit(),5)} }>Save</button>
+                                <button class="common-btn commonBlueBtn" onClick = {() => {this.props.checkFormIsValid(); setTimeout(() => this.handleSubmit(this.props.editDetailsID),5)} }>Save</button>
                             </div>
                             </div>
                         </div>
@@ -159,6 +177,9 @@ const mapStateToProps = state => {
         fields : state.educationalDetails.fields,
         errors : state.educationalDetails.errors,
         formValid : state.educationalDetails.formValid,
+        editDetailsID : state.educationalDetails.edit,
+        token: state.token,
+        workerID : state.workerID
     }
 }
 
@@ -169,7 +190,8 @@ const mapDispatchToProps = dispatch => {
         checkFormIsValid : () => dispatch({type: "IS_FORM_VALID", data : 'educationalDetails'}), 
         addDetails : (fields) => dispatch({type : "ADD_DETAILS", val : fields, data : 'educationalDetails'}),
         resetForm : () => dispatch({type : "RESET_FORM", data : 'educationalDetails'}),
-        editAction : () => dispatch({type : "EDIT_ACTION", data : "educationalDetails"})
+        editAction : () => dispatch({type : "EDIT_ACTION", data : "educationalDetails"}),
+        mapDatabaseToLocal : (res) => dispatch({type : "MAP_DATABASE_TO_LOCAl", name:'educationalDetails', res: res})
     }
 }
 

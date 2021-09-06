@@ -1,6 +1,7 @@
 import React from 'react';
 import './additionalDetails.css';
 import { Link } from 'react-router-dom';
+import {connect} from "react-redux";
 
 import Modal from './modal';
 import DetailsPanel from './detailsPanel';
@@ -17,7 +18,7 @@ class AdditionalDetails extends React.Component {
         <section className="mainbgColor create-profile-section">
         <div className="container-fluid">
             <div className="row">
-                <SideNav additionalPage = {this.props.additionalPage} employmentPage = {this.props.employmentPage}/>
+            <SideNav page='additionalDetails' additionalPage = {this.props.additionalPage} employmentPage = {this.props.employmentPage}/>
             <div class="col-md-9">
                     <div class="CreateProfileForm">
                         <div class="profileHeadSec">
@@ -312,13 +313,13 @@ class AdditionalDetails extends React.Component {
                         </div>
                       
                     </div>
-                    <div class="btn-group NextFormButtons">
-                        <button class="common-btn commonOutlineBtn">Draft</button>
-                        <Link to="/createProfile/employmentDetails"><button class="common-btn commonBlueBtn">Save & Next</button></Link>
+                    <div className="btn-group NextFormButtons">
+                        <button className="common-btn commonOutlineBtn">Draft</button>
+                        <Link to="/createProfile/employmentDetails"><button className="common-btn commonBlueBtn" onClick={() => this.props.onFilled()}>Save & Next</button></Link>
                     </div>
 
-                    <div class="modal fade" id="enterDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered multistepModal CreateProfileModal" role="document">
+                    <div className="modal fade" id="enterDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered multistepModal CreateProfileModal" role="document">
                           <Modal />
                         </div>
                     </div>
@@ -333,4 +334,9 @@ class AdditionalDetails extends React.Component {
 
 }
 
-export default AdditionalDetails;
+const mapDispatchToProps = dispatch => {
+  return {
+    onFilled : () => dispatch({type: "ON_FILLED", data : 'additional'}),
+  }
+}
+export default connect(null,mapDispatchToProps)(AdditionalDetails);

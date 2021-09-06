@@ -24,7 +24,7 @@
         case 'select' :
                 inputTag = (<select {...props.config} 
                     onChange = {props.change} 
-                    className = {initialClasses.join(" ")}>
+                    className = {initialClasses.join(" ")} value={props.value}>
                    { props.options.map( (option, i) => 
                     (<option value={option} key={i}>{option}</option>))
                 }

@@ -1,7 +1,46 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import axios from "axios";
 
 class CollapsedSkills extends React.Component{
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+ this.props.token
+      }
+
+    componentDidMount(){
+        axios.get('http://localhost:9001/api/skills-masters/worker/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
+        {
+            this.props.mapDatabaseToLocal(res.data, "skills")
+        })
+        axios.get('http://localhost:9001/api/portfolios/worker/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
+        {
+            this.props.mapDatabaseToLocal(res.data, "portfolio")
+        })
+    }
+
+    onDelete = async (id,) => {
+        if (this.props.data === "skills"){
+            await axios.delete('http://localhost:9001/api/skills-masters'+id, {headers : this.headers}).then((res) => console.log(res))
+
+
+            axios.get('http://localhost:9001/api/skills-masters/worker/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
+            {
+                this.props.mapDatabaseToLocal(res.data, this.props.data)
+            })
+        } else {
+            await axios.delete('http://localhost:9001/api/portfolios/'+id, {headers : this.headers}).then((res) => console.log(res))
+
+
+            axios.get('http://localhost:9001/api/portfolios/worker/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
+            {
+                this.props.mapDatabaseToLocal(res.data, this.props.data)
+            })
+
+        }
+    }
+
     render(){
         return (
             <div class="skill addedDetail paddX15 disF">
@@ -17,7 +56,7 @@ class CollapsedSkills extends React.Component{
                     </svg>
                 </a> */}
                 
-                <a class="removeDetail" onClick={() => {this.props.deleteDetails(this.props.id, this.props.data); }}>
+                <a class="removeDetail" onClick={() => this.onDelete(this.props.id.id,)}>
                     <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#f67980">
                     <path d="M0 0h24v24H0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
                     </svg>
@@ -30,14 +69,15 @@ class CollapsedSkills extends React.Component{
 
 const mapStateToProps = state => {
     return {
-        
+        token: state.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         // editDetails : (id) => dispatch({type : "EDIT_DETAILS", id : id, data : "skills"}),
-        deleteDetails : (id, name) => dispatch({type : "DELETE_DETAILS", id : id, name : name})
+        deleteDetails : (id, name) => dispatch({type : "DELETE_DETAILS", id : id, name : name}),
+        mapDatabaseToLocal : (res, name) => dispatch({type : "MAP_DATABASE_TO_LOCAl", name: name, res: res})
     }
 }
 

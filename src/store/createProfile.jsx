@@ -1,7 +1,11 @@
 const initialState = {
     CategorySelected : "HealthCare",
-    goToAdditionalDetails : false,
-    goToEmploymentDetails : false,
+    isBasicDetailsFilled:false,
+    isAdditionalDetailsFilled:false,
+    isEmploymentDetailsFilled:false,
+    token: "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYzMTAyNzc4OX0.X2pHPfQ6nggbUVw8Y3AoNhUviqWYtxYpLugof1xDnvYTouFOWrKoTD_3qcZUgUYwJzKCX53HVkDEF2VzsXmePg",
+    // workerID : null,
+    // workerID: 11,
     modalSelected : '',
     skills : {
         skills : ["Python", "Java", "Graphic design"],
@@ -33,8 +37,8 @@ const initialState = {
         profilePic: undefined,
         Gender: {Gender : '', inValid : false},
         DOB: {DOB : '', inValid : false},
-        Category:'HealthCare',
-        Sub_Category:'Administration',
+        Category: "HealthCare",
+        Sub_Category: 'Administration',
         ID_Proof: {ID_Proof : '',},
         ID_Code: {ID_Code : '',},
         Status: {Status : '',},
@@ -64,22 +68,13 @@ const initialState = {
             Grade : {Grade : "", invalid : 'false'},
         },
 
-        educationalDetails : [{Degree : {Degree : "B.Tech1", invalid : "false"},
-                                PassingYear : {PassingYear : "2022", invalid : 'false'},
-                                CurrentlyStudying : {CurrentlyStudying : false, invalid : 'false'},
-                                University : {University : "CVR", invalid : 'false'},
-                                Grade : {Grade : "80%", invalid : 'false'}},
-                                {Degree : {Degree : "B.Tech2", invalid : "false"},
-                                PassingYear : {PassingYear : "2022", invalid : 'false'},
-                                CurrentlyStudying : {CurrentlyStudying : false, invalid : 'false'},
-                                University : {University : "CVR", invalid : 'false'},
-                                Grade : {Grade : "80%", invalid : 'false'}},
-                                {Degree : {Degree : "B.Tech3", invalid : "false"},
-                                PassingYear : {PassingYear : "2022", invalid : 'false'},
-                                CurrentlyStudying : {CurrentlyStudying : false, invalid : 'false'},
-                                University : {University : "CVR", invalid : 'false'},
-                                Grade : {Grade : "80%", invalid : 'false'}}
-                            ],
+        educationalDetails : [{
+            Degree : {Degree : "", invalid : "false"},
+            PassingYear : {PassingYear : "", invalid : 'false'},
+            CurrentlyStudying : {CurrentlyStudying : false, invalid : 'false'},
+            University : {University : "", invalid : 'false'},
+            Grade : {Grade : "", invalid : 'false'},
+        },],
         formValid: false,
         edit : {id : null},
         errors : {
@@ -137,9 +132,9 @@ const initialState = {
             ExpiryYear : {ExpiryYear : "", invalid : "false"},
         },
         certifications : [{
-            Name : {Name : "UI Design and Conceptualization", invalid : "false"},
-            Issuer : {Issuer : "Layola School Of Design", invalid : "false"},
-            IssueYear : {IssueYear : "2018", invalid : "false"},
+            Name : {Name : "", invalid : "false"},
+            Issuer : {Issuer : "", invalid : "false"},
+            IssueYear : {IssueYear : "", invalid : "false"},
             ExpiryYear : {ExpiryYear : "",invalid : "false"},
         }],
         edit : {id : null},
@@ -191,7 +186,7 @@ const reducer = (state = initialState, action) => {
 
         case "CHANGE_CATEGORY" : 
                 newState.CategorySelected = action.val;
-                let f={...newState.fields}
+                let f={...newState.fields.fields}
                 f['Category']=action.val;
                 if(action.val  ==='HealthCare'){
                     f['Sub_Category']='Administration'
@@ -202,7 +197,7 @@ const reducer = (state = initialState, action) => {
                 else{
                     f['Sub_Category']='FrontEnd'
                 }
-                newState.fields=f
+                newState.fields.fields=f
                 break;
 
         case "CHANGE_FIELD":
@@ -243,7 +238,7 @@ const reducer = (state = initialState, action) => {
         case "ADD_DETAILS":
             let edit = newState[action.data].edit.id
             if (edit !== null){
-                newState[action.data][action.data] = newState[action.data][action.data].map((item, id) => {if(id===edit){return action.val} else{return item}})
+                newState[action.data][action.data] = newState[action.data][action.data].map((item, id) => {if(item.id===edit){return action.val} else{return item}})
                 newState[action.data].edit.id = null
                 newState[action.data].errors = newState[action.data].errorsdup
             } else {
@@ -257,9 +252,10 @@ const reducer = (state = initialState, action) => {
             break;
 
         case "EDIT_DETAILS":
-            var obj1 = JSON.parse(JSON.stringify(newState[action.name][action.name][action.id]));
+            var obj1 = newState[action.name][action.name].filter((val) => {if(val.id.id === action.id){return (val)}})
+            // var obj1 = JSON.parse(JSON.stringify(newState[action.name][action.name].));
             // var ob = Object.assign({}, newState.educationalDetails.educationalDetails[action.id])
-            newState[action.name].fields = obj1
+            newState[action.name].fields = obj1[0]
             Object.keys(newState[action.name].errors).map((val) => {newState[action.name].errors[val] = ""})
             // newState.educationalDetails.errors = {}
             newState[action.name].edit.id = action.id
@@ -286,11 +282,88 @@ const reducer = (state = initialState, action) => {
             newState[action.data].errors = newState[action.data].errorsdup
             }
             break;
+
+        case "MAP_DATABASE_TO_LOCAl":
+            var data = null
+            switch (action.name){
+                case "educationalDetails" : data = [action.res][0].map((item, id) => {
+                    return ({id : {id : item.id},Degree : {Degree : item.degreeName, invalid : "false"},
+                                    PassingYear : {PassingYear : item.yearOfPassing, invalid : 'false'},
+                                    CurrentlyStudying : {CurrentlyStudying : item.isComplete, invalid : 'false'},
+                                    University : {University : item.institute, invalid : 'false'},
+                                    Grade : {Grade : item.marks, invalid : 'false'}})
+                    })
+                    break;
+                case "certifications" : data = [action.res][0].map((item, id) => {
+                    return ({id : {id : item.id},
+                        Name : {Name : item.certificateName, invalid : "false"},
+                        Issuer : {Issuer : item.issuer, invalid : "false"},
+                        IssueYear : {IssueYear : item.issueYear, invalid : "false"},
+                        ExpiryYear : {ExpiryYear : item.expiryYear,invalid : "false"},
+                    })
+                    })
+                    break;
+                case 'workDetails': data = [action.res][0].map((item, id) => {
+                    return ({id : {id : item.id},
+                            EmployerName : {EmployerName : item.companyName, invalid : "false"},
+                            Designation : {Designation : item.jobTitle, invalid : "false"},
+                            StartDate : {StartDate : item.startDate, invalid : "false"},
+                            EndDate : {EndDate : item.endDate, invalid : "false"},
+                            WorkLocation : {WorkLocation : item.employeeLocations, invalid : "false"},
+                            CurrentlyStudying:{CurrentlyStudying : item.isCurrent,},
+                    })
+                    })
+                    break;
+                case "recommendations": data = [action.res][0].map((item, id) => {
+                    return ({id : {id : item.id},Name : {Name : item.name, invalid : "false"},
+                    Email : {Email : item.enmail, invalid : "false"},
+                    PhoneNumber : {PhoneNumber : item.phone, invalid : "false"},
+                    })
+                    })
+                    break;
+                case "skills":  data = [action.res][0].map((item, id) => {
+                    return ({id : {id : item.id}, item : item.skillName
+                    })
+                    })
+                    break;
+                    
+                case "portfolio": data = [action.res][0].map((item, id) => {
+                    return ({id : {id : item.id}, item : item.portfolioURL
+                    })
+                    })
+                    break;
+                default:
+                    break
+            }
+            newState[action.name][action.name] = data
+            break;
+
         case "CHANGE_MODAL":
             newState.modalSelected=action.modal;
             break
+        
+        case "ON_FILLED":
+            if(action.data==='basic')
+            {
+                newState.isBasicDetailsFilled=true;
+            }
+            else if(action.data==='additional')
+            {
+                newState.isAdditionalDetailsFilled=true;
+            }
+            else{
+                newState.isEmploymentDetailsFilled=true;
+            }
+            break;
+
+        // case "SET_WORKER_ID":
+        //     newState.workerID = action.id
+        //     break;
+
         default :
             break;
+
+        
     }
     return newState
 }
