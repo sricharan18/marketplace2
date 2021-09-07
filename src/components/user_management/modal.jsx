@@ -17,6 +17,7 @@ class Modal extends React.Component{
         editable : false,
         login : false,
         signup: false,
+        active: "Sign Up"
     }
 
     candidateSignup = () => {
@@ -55,15 +56,18 @@ class Modal extends React.Component{
         await this.setState({signup : true, login : false})
     }
 
-
+    setActive = (val) => {
+        this.setState({active : val})
+    }
 
     render() {
         let variable = null
 
         if(this.props.signUp === "true"){
             variable = <SignupAs candidate={this.candidateSignup}/>
+            
         } else if(this.props.login === "true"){
-            variable = <Login click={this.goToSignup} OtpVerfication={this.OtpVerfication}/>
+            variable = <Login click={this.goToSignup} OtpVerfication={this.OtpVerfication} setActive={this.setActive}/>
         }
 
         if(this.state.signup === true){
@@ -71,14 +75,14 @@ class Modal extends React.Component{
         }
 
         if (this.state.candidate === true) {
-            variable = <Signup signupMobile = { this.signupMobile }/>
+            variable = <Signup signupMobile = { this.signupMobile } back = { this.back }/>
         }
         if (this.state.mobile === true) {
             // variable = <Signup2 back = { this.back } OtpVerfication = { this.OtpVerfication } mobNum = { this.setMobNum } />
-            variable = <Signup2 back = { this.back } OtpVerfication = { this.OtpVerfication } />
+            variable = <Signup2 back = { this.back } OtpVerfication = { this.OtpVerfication } setActive={this.setActive}/>
         }
         if (this.state.otp === true){
-            variable = <OTP back = { this.back } mobNum={this.state.mobNum} editableTextbox = {this.editableTextbox} editable = { this.state.editable } success = { this.success }/>
+            variable = <OTP back = { this.back } mobNum={this.state.mobNum} editableTextbox = {this.editableTextbox} editable = { this.state.editable } success = { this.success } active={this.state.active}/>
         }
         if (this.state.success === true) {
             variable = <Success />

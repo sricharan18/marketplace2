@@ -20,6 +20,25 @@ class Header extends React.Component{
                   </g>
               </svg>
           </a>
+
+          {/* <form className=" my-2 my-lg-0 disNoneDesk disBlockMob">
+          <button type="button" className="navbar-Btn log-in-btn" data-toggle="modal" data-target="#login">Log In</button>
+          <button type="button" className="navbar-Btn sign-up-btn" data-toggle="modal" data-target="#signUp">Sign Up</button>
+          <div className="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered multistepModal" role="document">
+              <Modal login="true" signUp="false"/>
+          </div>
+          </div>
+          <div className="modal fade" id="signUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered multistepModal" role="document">
+              <Modal login="false" signUp="true"/>
+          </div>
+          </div>
+          </form> */}
+
+
+
+
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
           {/* <!-- <a className="navbar-brand" href="#">@Simplify <span>MARKET PLACE</span></a> --> */}
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -38,7 +57,8 @@ class Header extends React.Component{
               <button className="navbar-Btn sign-up-btn">Sign Up</button>
           </form> --> */}
           </div>
-          <form className="form-inline my-2 my-lg-0">
+          <form className=" my-2 my-lg-0 DisNoneMob">
+          {(localStorage.getItem("token") !== null) ? <p onClick={() => localStorage.removeItem("token")}>SignOut</p>: <div>
           <button type="button" className="navbar-Btn log-in-btn" data-toggle="modal" data-target="#login">Log In</button>
           <button type="button" className="navbar-Btn sign-up-btn" data-toggle="modal" data-target="#signUp">Sign Up</button>
           <div className="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -50,7 +70,8 @@ class Header extends React.Component{
           <div className="modal-dialog modal-dialog-centered multistepModal" role="document">
               <Modal login="false" signUp="true"/>
           </div>
-          </div>
+          </div></div>}
+          
           </form>
       </nav>
       </header>

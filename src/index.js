@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
+import axios from 'axios';
 
 import './index.css';
 import App from './App';
@@ -10,6 +11,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import reducer from './store/createProfile';
 
 const store = createStore(reducer)
+
+axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("token")
 
 ReactDOM.render(
   <Provider store = {store}>

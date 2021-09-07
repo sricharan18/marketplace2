@@ -37,6 +37,9 @@ class Signup2 extends React.Component{
         axios.post("http://localhost:9001/api/admin/users", data, 
         {headers : headers}).then((response) => {
             console.log(response)
+            if (response.data.activated){
+                this.props.setActive("Login")
+            }
           }).catch((error) => {
               console.log(error)
           })
@@ -86,7 +89,12 @@ class Signup2 extends React.Component{
         <div>
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Sign Up</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000" onClick = { () => this.props.back('mobile') }>
+                        <path d="M0 0h24v24H0z" fill="none"/><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                    </svg>
+                    Sign Up
+                </h5>
                 <p>Continue using Mobile</p>
                 </div>
                 <div class="modal-body candidate-signup">
@@ -99,8 +107,8 @@ class Signup2 extends React.Component{
                     </div>
 
                     <div class="btn-group">
-                        <button type="button" class="Social-login-btn fb-button" onClick = { () => this.props.back('mobile') }>Back</button>
-                        <button type="button" class="Social-login-btn Google-button" onClick = {() => this.props.OtpVerfication(this.mobileNumber)}>Continue</button>
+                        {/* <button type="button" class="Social-login-btn fb-button" onClick = { () => this.props.back('mobile') }>Back</button> */}
+                        <button type="button" class="Social-login-btn common-lightblue-button wid100" onClick = {() => {this.props.OtpVerfication(this.mobileNumber);this.props.setActive("Sign Up")}}>Continue</button>
                     </div>
                 </div>
                 <div class="modal-footer">

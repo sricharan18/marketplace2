@@ -1,14 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import $ from "jquery";
 
-import Input from "../input/input";
-import SideNav from './sideNav';
-import Header from '../header/Header';
+import Input from "./input/input";
 
 
-class EmploymentQues extends React.Component {
+class EditEmploymentModal extends React.Component {
 
     handleChange(field, event)
     {        
@@ -57,7 +55,7 @@ class EmploymentQues extends React.Component {
 
         const headers = {
             'Content-Type': 'application/json',
-            // 'Authorization': 'Bearer '+ this.props.token
+            'Authorization': 'Bearer '+ this.props.token
           }
           
 
@@ -67,26 +65,12 @@ class EmploymentQues extends React.Component {
         {city : this.props.fields.LocationPreference.LocationPreference, employmentId : response.data.id}, {headers : headers})
         .then((response) => {console.log(response)}).catch((e) => console.log(e))
         }).catch((e) => console.log(e))
-
-        
-
-        this.props.onFilled()
+        $('#enterDetails').click();
     }
 
     render (){
         return (
-            <div>
-        <Header />
-        <section className="mainbgColor create-profile-section">
-        <div className="container-fluid">
-            <div className="row">
-            <SideNav page='employmentDetails' additionalPage = {this.props.additionalPage} employmentPage = {this.props.employmentPage}/>
-            <div class="col-md-9">
-                    <div class="CreateProfileForm">
-                        <div class="profileHeadSec">
-                            <h4>Create Profile</h4>
-                        </div>
-
+            <div class="modal-content">
                         <div class="FormSec employerDetails">
                             <form>
                                 <div class="form-row">
@@ -115,11 +99,11 @@ class EmploymentQues extends React.Component {
                                         <label for="inputworkType">Work Type</label>
                                         <div class="RadioBtn">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="WorkTypeOptions" id="fullTime" value="FullTime" onChange={this.handleChange.bind(this,"WorkType",)}/>
+                                                <input class="form-check-input" type="radio" name="WorkTypeOptions" id="fullTime" value="FullTime" checked={this.props.fields.WorkType.WorkType=== "FullTime"} onChange={this.handleChange.bind(this,"WorkType",)}/>
                                                 <label class="form-check-label" for="fullTime">Full Time</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="WorkTypeOptions" id="partTime" value="PartTime" onChange={this.handleChange.bind(this,"WorkType",)}/>
+                                                <input class="form-check-input" type="radio" name="WorkTypeOptions" id="partTime" value="PartTime" checked={this.props.fields.WorkType.WorkType=== "PartTime"} onChange={this.handleChange.bind(this,"WorkType",)}/>
                                                 <label class="form-check-label" for="partTime">Part Time</label>
                                             </div>
                                         </div>
@@ -129,11 +113,11 @@ class EmploymentQues extends React.Component {
                                         <label for="inputEmployType">Employnment Type</label>
                                         <div class="RadioBtn">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="EmploynmentTypeOptions" id="permanent" value="Permanent" onChange={this.handleChange.bind(this,"EmploymentType")}/>
+                                                <input class="form-check-input" type="radio" name="EmploynmentTypeOptions" id="permanent" value="Permanent" checked={this.props.fields.EmploymentType.EmploymentType=== "Permanent"} onChange={this.handleChange.bind(this,"EmploymentType")}/>
                                                 <label class="form-check-label" for="permanent">Permanent</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="EmploynmentTypeOptions" id="inlineRadio2" value="Contractual" onChange={this.handleChange.bind(this,"EmploymentType")}/>
+                                                <input class="form-check-input" type="radio" name="EmploynmentTypeOptions" id="inlineRadio2" value="Contractual" checked={this.props.fields.EmploymentType.EmploymentType=== "Contractual"} onChange={this.handleChange.bind(this,"EmploymentType")}/>
                                                 <label class="form-check-label" for="inlineRadio2">Contract</label>
                                             </div>
                                         </div>
@@ -143,15 +127,15 @@ class EmploymentQues extends React.Component {
                                         <label for="inputWorkLocation">Work Location</label>
                                         <div class="RadioBtn">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="WorkFromHome" onChange={this.handleChange.bind(this,"WorkLocation")}/>
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="WorkFromHome" checked={this.props.fields.WorkLocation.WorkLocation=== "WorkFromHome"} onChange={this.handleChange.bind(this,"WorkLocation")}/>
                                                 <label class="form-check-label" for="inlineRadio1">Home</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="WorkFromOffice" onChange={this.handleChange.bind(this,"WorkLocation")}/>
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="WorkFromOffice" checked={this.props.fields.WorkLocation.WorkLocation=== "WorkFromOffice"} onChange={this.handleChange.bind(this,"WorkLocation")}/>
                                                 <label class="form-check-label" for="inlineRadio2">Office</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Both" onChange={this.handleChange.bind(this,"WorkLocation")}/>
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Both" checked={this.props.fields.WorkLocation.WorkLocation=== "Both"} onChange={this.handleChange.bind(this,"WorkLocation")}/>
                                                 <label class="form-check-label" for="inlineRadio2">Both</label>
                                             </div>
                                         </div>
@@ -202,16 +186,12 @@ class EmploymentQues extends React.Component {
 
                             </form>
                         </div>
-                      
-                    </div>
-                    <div class="btn-group NextFormButtons">
-                        <button class="common-btn commonOutlineBtn">Draft</button>
-                        <Link to="/viewProfile"><button class="common-btn commonBlueBtn" onClick={() => this.handleSubmit()}>Save & Next</button></Link>
-                    </div>
-                </div>
-                </div>
-            </div>
-        </section>
+                        <div class="modal-footer">
+                        <div class="btn-group NextFormButtons ModalNextFormButtons ">
+                            <button class="common-btn commonBlueBtn" 
+                            onClick = {() => {setTimeout(() => this.handleSubmit(),5)}}>Save</button>
+                        </div>
+                        </div>
         </div>
         )
     }
@@ -228,11 +208,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeState : (name,val)=> dispatch({type:"CHANGE_FIELD", name:name, val:val, data : 'employmentQues'}),
-        checkFormIsValid : () => dispatch({type: "IS_FORM_VALID", data : 'fields'}), 
-        onFilled : () => dispatch({type: "ON_FILLED", data : 'employment'}),
+        changeState : (name,val)=> dispatch({type:"CHANGE_FIELD", name:name, val:val, data : 'employmentQues'}), 
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmploymentQues);
+export default connect(mapStateToProps, mapDispatchToProps)(EditEmploymentModal);

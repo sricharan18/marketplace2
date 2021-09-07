@@ -26,3 +26,47 @@ button.navbar-Btn.sign-up-btn {
     background-color: #007BFF19;
     border-radius: 30px;
 }
+.disNoneDesk {
+    display: none;
+}
+
+/* +++++++++++++++++++++++++ RESPONSIVE CSS : STARTS +++++++++++++++++++++++++  */
+
+@media only screen and (min-width : 320px)
+and (max-width : 576px){
+
+
+    /*=============== Navigation Bar CSS : STARTS ================ */
+    .DisNoneMob{
+        display: none;
+    }
+    .disBlockMob{
+        display: block;
+    }
+    .Top-Navigation nav.navbar {
+        padding: 15px;
+        /* height: 80px; */
+        height: unset;
+  
+    }
+    .Top-Navigation .navbar-brand {
+       margin-right: unset;
+    }
+    .Top-Navigation ul.navbar-nav {
+        padding-left: 15px;
+    }
+    .Top-Navigation .navbar-light .navbar-toggler {
+        border: none;
+    }
+    .Top-Navigation .navbar-toggler {
+        font-size: 1rem;
+        padding: .25rem;
+    }
+    .Top-Navigation svg {
+        width: 130px;
+        height: 14px;
+    }
+    /*=============== Navigation Bar CSS : ENDS ================ */
+
+}
+/* +++++++++++++++++++++++++ RESPONSIVE CSS : ENDS +++++++++++++++++++++++++  */

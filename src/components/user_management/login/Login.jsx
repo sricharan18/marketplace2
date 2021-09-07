@@ -43,6 +43,9 @@ class Login extends React.Component{
         axios.post("http://localhost:9001/api/admin/users", data, 
         {headers : headers}).then((response) => {
             console.log(response)
+            if (response.data.activated === false){
+                this.props.setActive("Sign Up")
+            }
           }).catch((error) => {
               console.log(error)
           })
@@ -71,7 +74,7 @@ class Login extends React.Component{
         <div>
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Login</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Log In</h5>
                 {/* <p>Continue using Mobile</p> */}
                 </div>
                 <div class="modal-body candidate-signup">
@@ -85,7 +88,7 @@ class Login extends React.Component{
 
                     <div class="btn-group">
                         {/* <button type="button" class="Social-login-btn fb-button" onClick = { () => this.props.back('mobile') }>Back</button> */}
-                        <button type="button" class="Social-login-btn Google-button" style={{width: '100%'}} onClick = {() => this.props.OtpVerfication(this.mobileNumber)}>Continue</button>
+                        <button type="button" class="Social-login-btn Google-button" style={{width: '100%'}} onClick = {() => {this.props.OtpVerfication(this.mobileNumber); this.props.setActive("Login")}}>Continue</button>
                     </div>
                 </div>
                 <div class="modal-footer">

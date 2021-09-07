@@ -5,6 +5,7 @@ import Certifications from "./certifications";
 import EducationalDetails from "./educationalDetails";
 import WorkHistory from "./workHistory";
 import Recommendations from "./recommendations";
+import EditEmploymentModal from "../../editEmploymentModal";
 
 class Modal extends React.Component {
 
@@ -23,6 +24,9 @@ class Modal extends React.Component {
                 break
             case "recommendations":
                 modal=(<Recommendations/>)
+                break
+            case "employmentDetails":
+                modal=(<EditEmploymentModal/>)
                 break
         }
         return (

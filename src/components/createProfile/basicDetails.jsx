@@ -65,7 +65,7 @@ class BasicDetails extends React.Component{
 
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ this.props.token
+            // 'Authorization': 'Bearer '+ localStorage.getItem("token")
           }
 
         console.log(headers)

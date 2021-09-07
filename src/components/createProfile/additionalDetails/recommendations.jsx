@@ -37,7 +37,7 @@ class Recommendations extends React.Component {
 
             const headers = {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+ this.props.token
+                // 'Authorization': 'Bearer '+ this.props.token
               }
             console.log(data)
               
@@ -57,6 +57,7 @@ class Recommendations extends React.Component {
 
             axios.get('http://localhost:9001/api/refereces/worker/'+ localStorage.getItem("WorkerID")).then((res) => 
             {
+                console.log(res.data)
                 this.props.mapDatabaseToLocal(res.data)
             })
             $('#enterDetails').click();

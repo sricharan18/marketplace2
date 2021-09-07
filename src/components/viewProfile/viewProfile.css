@@ -1,0 +1,224 @@
+section.mainbgColor.view-profile-section {
+    padding: 40px 0;
+}
+.EmploynmentConditionHead {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.EmploynmentConditionHead h4{
+    font-size: 18px;
+    color: #1C1C1C;
+    font-family: 'robotoregular';
+}
+.EmploynmentCondition {
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 3px 9px #00000012;
+}
+.editEmploynmentCondition {
+    padding: 5px 10px;
+    border: 1px solid #E7E7E7;
+    border-radius: 4px;
+    line-height: 1;
+    cursor: pointer;
+}
+.editEmploynmentCondition svg{
+    border-bottom: 1px solid #017bff;
+}
+.employenmentsec h6{
+    margin-bottom: 3px;
+    font-size: 14px;
+    color: #1C1C1C;
+}
+.Conditions svg{
+    margin-right: 20px;
+}
+.employenmentsec p{
+    color: #AFAFAF;
+}
+.Conditions {
+    margin: 25px 0;
+}
+.expand {
+    text-align: center;
+    padding-top: 30px;
+}
+.expand a{
+    border: 1px solid #E7E7E7;
+    border-radius: 4px;
+    padding: 5px;
+    color: #1C1C1C;
+}
+
+  
+  .EmploynmentCondition a.collapsed:after {
+    content: 'Show More' url(../../imgaes/icons/expand_more_black_24dp.svg);
+  }
+  
+  .EmploynmentCondition a:not(.collapsed):after {
+    content: 'Show Less' url(../../imgaes/icons/expand_less_black_24dp.svg);
+  }
+  
+ .EmploynmentCondition #ConditionShow.collapse:not(.show) {
+    display: block;
+    /* height = lineheight * no of lines to display */
+    height: 320px;
+    overflow: hidden;
+  }
+  
+  .EmploynmentCondition #ConditionShow.collapsing {
+    height: 320px;
+  }
+
+
+  /* Profile Details Section CSS : STARTS */
+  .ProfileBasicDetail {
+    background-color: #ffffff;
+    box-shadow: 0px 3px 9px #00000012;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+  .coverPhoto {
+    position: relative;
+    width: 100%;
+    height: 166px;
+    background: url(../../imgaes/MicrosoftTeams-image.png) no-repeat;
+    background-size: 100% 100%;
+}
+.uploadCoverPhoto {
+    position: absolute;
+    right: 30px;
+    top: 25px;
+    width: 30px;
+    height: 30px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.uploadCoverPhoto input{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+.ViewProfileDetail {
+    padding: 20px 30px;
+    position: relative;
+}
+.profileActionButtons {
+    display: flex;
+    justify-content: flex-end;
+}
+.ViewProfileDetail h2 {
+    font-size: 18px;
+    color: #1C1C1C;
+    margin-bottom: 20px;
+}
+
+.Summary p{
+    color: #848484;
+}
+.FontBold{
+    font-family: 'robotomedium';
+    margin: 30px 0 20px;
+}
+ul.ProfileBasicInfo {
+    margin-bottom: 10px;
+    margin-left: -30px;
+}
+li{
+    margin-right: 10px;
+}
+.ProfileBasicInfo li{
+display: inline-block;
+}
+.ViewProfileDetail .ProfileBasic .ProfileBasicInfo span{
+    display: flex;
+    align-items: center;
+}
+.ViewProfileDetail .ProfileBasic .ProfileBasicInfo span svg{
+    margin-right: 8px;
+}
+
+.ViewProfileDetail span  {
+    border-radius: 30px;
+    font-size: 12px;
+    color: #525252;
+    display: inline-block;
+    padding: 7px 15px;
+    background-color: #F7F7F7;
+}
+.status {
+    height: 24px;
+    padding: 5px 13px;
+    font-size: 11px;
+    border-radius: 4px;
+    margin: 0 8px;
+}
+.status.online{
+    background-color: #4ADB87;
+    color: #ffffff;
+}
+.profileActionButtons .onlinedot {
+    width: 8px;
+    height: 8px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    margin-right: 5px;
+    padding: 0;
+}
+.EditViewedProfile {
+    height: 24px;
+    font-size: 11px;
+    padding: 0 10px;
+    border-radius: 5px;
+}
+.ProfilePicMain {
+    position: absolute;
+    top: -35%;
+    width: 125px;
+    height: 125px;
+    background-color: #eaebeb;
+    border-radius: 50%;
+    border: 4px solid #ffffff;
+    box-shadow: 0px 3px 9px #0000002b;
+}
+.profileImg {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.VieweditableDetails span{
+    background-color: unset;
+    color: #848484;
+    padding: 0;
+}
+.workIconImg{
+    padding: 10px;
+}
+.workIconImg img{
+    width: 90%;
+}
+.ViewHistory{
+    text-align: left;
+    padding: 0;
+    margin: 0 30px;
+}
+.ViewHistory a{
+    font-size: 11px;
+}
+.ViewProfileDetailHead.disF {
+    align-items: flex-start;
+}
+.skills span{
+    color: #007BFF;
+    margin-right: 10px;
+}

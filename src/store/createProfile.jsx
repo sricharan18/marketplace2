@@ -3,9 +3,7 @@ const initialState = {
     isBasicDetailsFilled:false,
     isAdditionalDetailsFilled:false,
     isEmploymentDetailsFilled:false,
-    token: "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYzMTAyNzc4OX0.X2pHPfQ6nggbUVw8Y3AoNhUviqWYtxYpLugof1xDnvYTouFOWrKoTD_3qcZUgUYwJzKCX53HVkDEF2VzsXmePg",
-    // workerID : null,
-    // workerID: 11,
+    token: null,
     modalSelected : '',
     skills : {
         skills : ["Python", "Java", "Graphic design"],
@@ -159,9 +157,9 @@ const initialState = {
             PhoneNumber : {PhoneNumber : "", invalid : "false"},
         },
         recommendations : [{
-            Name : {Name : "Sai", invalid : "false"},
-            Email : {Email : "sai@gmail.com", invalid : "false"},
-            PhoneNumber : {PhoneNumber : "9949132471", invalid : "false"},
+            Name : {Name : "", invalid : "false"},
+            Email : {Email : "", invalid : "false"},
+            PhoneNumber : {PhoneNumber : "", invalid : "false"},
         }],
         edit : {id : null},
         errors : {
@@ -332,10 +330,53 @@ const reducer = (state = initialState, action) => {
                     })
                     })
                     break;
+                case "fields" : data = [action.res].map((item, id) => {
+                    return ({Name : {Name : item.firstName, invalid : "false"},
+                                    Email : {Email : item.email, invalid : 'false'},
+                                    PhoneNumber : {PhoneNumber : item.primaryPhone, invalid : 'false'},
+                                    CurrentLocation : {CurrentLocation : item.workerLocation},
+                                    Sub_Category: action.res2
+                                        })
+                    })
+                    data = data[0]
+                    break;
+                case "employmentDetails" : data = [action.res.jobPreference][0].map((item, id) => {
+                    let rate=0
+                    let rateType='per day'
+                    if(item.dailyRate!==0)
+                    {
+                        rate=item.dailyRate;
+                        rateType='per day'
+                    }
+                    if(item.hourlyRate!==0)
+                    {
+                        rate=item.hourlyRate;
+                        rateType='per hour'
+                    }
+                    if(item.monthlyRate!==0)
+                    {
+                        rate=item.monthlyRate;
+                        rateType='per month'
+                    }
+                    return ({AvailableFrom : {AvailableFrom : item.availableFrom},
+                    AvailableTill : {AvailableTill : item.availableTo},
+                    WorkType : {WorkType : item.engagementType},
+                    EmploymentType : {EmploymentType : item.employmentType},
+                    Rate : {Rate : rate},
+                    RateType : {RateType : rateType},
+                    WorkLocation : {WorkLocation : item.locationType},
+                    LocationPreference : {LocationPreference : action.res2},
+                                        })
+                    })
+                    newState.employmentQues.fields=data[0];
+                    break;
                 default:
                     break
             }
-            newState[action.name][action.name] = data
+            if(action.name!=='employmentDetails')
+            {
+                newState[action.name][action.name] = data
+            }
             break;
 
         case "CHANGE_MODAL":
