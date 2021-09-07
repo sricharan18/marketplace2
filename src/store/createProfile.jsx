@@ -44,10 +44,10 @@ const initialState = {
         CurrentLocation: {CurrentLocation : '',},
         },
         errors : {
-            Name: "Enter valid Name",
-            Email: "Enter valid email",
-            PhoneNumber: "Enter valid mobile number",
-            DOB: "Enter Date of birth",
+            Name: "",
+            Email: "",
+            PhoneNumber: "",
+            DOB: "",
         },
         errorsdup : {
             Name: "Enter valid Name",
@@ -230,6 +230,7 @@ const reducer = (state = initialState, action) => {
                     newState[action.data].errors[action.field] = ""
                 } else {
                     newState[action.data].errors[action.field] = newState[action.data].errorsdup[action.field]
+                    newState[action.data].formValid = false;
                 }
                 break;
 
@@ -335,28 +336,37 @@ const reducer = (state = initialState, action) => {
                                     Email : {Email : item.email, invalid : 'false'},
                                     PhoneNumber : {PhoneNumber : item.primaryPhone, invalid : 'false'},
                                     CurrentLocation : {CurrentLocation : item.workerLocation},
-                                    Sub_Category: action.res2
+                                    Sub_Category: "",
+                                    Gender: {Gender : item.gender, inValid : false},
+                                    DOB: {DOB : item.dateOfBirth, inValid : false},
+                                    Category: "HealthCare",
+                                    ID_Proof: {ID_Proof : item.idProof,},
+                                    ID_Code: {ID_Code : item.idCode,},
+                                    Status: {Status : item.status,},
+                                    Language: {Language : item.language,},
+
+                            
                                         })
                     })
                     data = data[0]
                     break;
-                case "employmentDetails" : data = [action.res.jobPreference][0].map((item, id) => {
+                case "employmentDetails" : data = [action.res.jobPreference].at(-1).map((item, id) => {
                     let rate=0
-                    let rateType='per day'
+                    let rateType='Select'
                     if(item.dailyRate!==0)
                     {
                         rate=item.dailyRate;
-                        rateType='per day'
+                        rateType='Daily Rate'
                     }
                     if(item.hourlyRate!==0)
                     {
                         rate=item.hourlyRate;
-                        rateType='per hour'
+                        rateType='Hourly Rate'
                     }
                     if(item.monthlyRate!==0)
                     {
                         rate=item.monthlyRate;
-                        rateType='per month'
+                        rateType='Monthly Rate'
                     }
                     return ({AvailableFrom : {AvailableFrom : item.availableFrom},
                     AvailableTill : {AvailableTill : item.availableTo},
@@ -365,10 +375,13 @@ const reducer = (state = initialState, action) => {
                     Rate : {Rate : rate},
                     RateType : {RateType : rateType},
                     WorkLocation : {WorkLocation : item.locationType},
-                    LocationPreference : {LocationPreference : action.res2},
+                    LocationPreference : {LocationPreference : ""},
+                    WorkingHours : {WorkingHours : item.hourPerDay},
                                         })
                     })
-                    newState.employmentQues.fields=data[0];
+
+                    console.log(data)
+                    newState.employmentQues.fields=data.at(-1);
                     break;
                 default:
                     break
@@ -395,6 +408,10 @@ const reducer = (state = initialState, action) => {
             else{
                 newState.isEmploymentDetailsFilled=true;
             }
+            break;
+        
+        case "GET_EMAIL":
+            newState.fields.fields.Email.Email = localStorage.getItem("email")
             break;
 
         // case "SET_WORKER_ID":

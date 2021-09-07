@@ -29,7 +29,8 @@ class Success extends React.Component{
                 <h4>Success</h4>
                 <p>Your account has been<br></br> created Successfully</p>
                 <button type="button" class="Social-login-btn common-lightblue-button">Verify your Email Address</button>
-                <Link to="createProfile/basicDetails">Skip and Continue to Profile Creation</Link>
+                {/* <Link to="createProfile/basicDetails">Skip and Continue to Profile Creation</Link> */}
+                <a href="http://localhost:3000/createProfile/basicDetails">Skip and Continue to Profile Creation</a>
                 </div>
             </div>
        

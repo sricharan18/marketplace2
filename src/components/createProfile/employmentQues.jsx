@@ -10,6 +10,15 @@ import Header from '../header/Header';
 
 class EmploymentQues extends React.Component {
 
+    componentDidMount() {
+        axios.get('http://localhost:9001/api/workers/profile/'+localStorage.getItem("WorkerID"),).then((res) => 
+        {
+            if (res.data.jobPreference.length !== 0){
+                this.props.mapDatabaseToLocal("employmentDetails",res.data)
+            }
+        })
+    }
+
     handleChange(field, event)
     {        
         var obj = {}
@@ -55,6 +64,9 @@ class EmploymentQues extends React.Component {
             }
         }
 
+        console.log(data)
+
+
         const headers = {
             'Content-Type': 'application/json',
             // 'Authorization': 'Bearer '+ this.props.token
@@ -63,14 +75,16 @@ class EmploymentQues extends React.Component {
 
         axios.post('http://localhost:9001/api/job-preferences', data, {headers : headers})
         .then((response) => {
+            console.log(response)
+            console.log({city : this.props.fields.LocationPreference.LocationPreference, employment : {id : response.data.id}})
             axios.post('http://localhost:9001/api/locations', 
-        {city : this.props.fields.LocationPreference.LocationPreference, employmentId : response.data.id}, {headers : headers})
+        {city : this.props.fields.LocationPreference.LocationPreference, employment : {id : response.data.id}}, {headers : headers})
         .then((response) => {console.log(response)}).catch((e) => console.log(e))
         }).catch((e) => console.log(e))
 
         
 
-        this.props.onFilled()
+        localStorage.setItem("isEmployFilled" , true)
     }
 
     render (){
@@ -109,17 +123,17 @@ class EmploymentQues extends React.Component {
                                     elementType="input" 
                                     />
                                 </div>
-
+                                
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label for="inputworkType">Work Type</label>
                                         <div class="RadioBtn">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="WorkTypeOptions" id="fullTime" value="FullTime" onChange={this.handleChange.bind(this,"WorkType",)}/>
+                                                <input class="form-check-input" type="radio" name="WorkTypeOptions" id="fullTime" value="FullTime" checked={this.props.fields.WorkType.WorkType=== "FullTime"} onChange={this.handleChange.bind(this,"WorkType",)}/>
                                                 <label class="form-check-label" for="fullTime">Full Time</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="WorkTypeOptions" id="partTime" value="PartTime" onChange={this.handleChange.bind(this,"WorkType",)}/>
+                                                <input class="form-check-input" type="radio" name="WorkTypeOptions" id="partTime" value="PartTime" checked={this.props.fields.WorkType.WorkType=== "PartTime"} onChange={this.handleChange.bind(this,"WorkType",)}/>
                                                 <label class="form-check-label" for="partTime">Part Time</label>
                                             </div>
                                         </div>
@@ -129,11 +143,11 @@ class EmploymentQues extends React.Component {
                                         <label for="inputEmployType">Employnment Type</label>
                                         <div class="RadioBtn">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="EmploynmentTypeOptions" id="permanent" value="Permanent" onChange={this.handleChange.bind(this,"EmploymentType")}/>
+                                                <input class="form-check-input" type="radio" name="EmploynmentTypeOptions" id="permanent" value="Permanent" checked={this.props.fields.EmploymentType.EmploymentType=== "Permanent"} onChange={this.handleChange.bind(this,"EmploymentType")}/>
                                                 <label class="form-check-label" for="permanent">Permanent</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="EmploynmentTypeOptions" id="inlineRadio2" value="Contractual" onChange={this.handleChange.bind(this,"EmploymentType")}/>
+                                                <input class="form-check-input" type="radio" name="EmploynmentTypeOptions" id="inlineRadio2" value="Contractual" checked={this.props.fields.EmploymentType.EmploymentType=== "Contractual"} onChange={this.handleChange.bind(this,"EmploymentType")}/>
                                                 <label class="form-check-label" for="inlineRadio2">Contract</label>
                                             </div>
                                         </div>
@@ -143,15 +157,15 @@ class EmploymentQues extends React.Component {
                                         <label for="inputWorkLocation">Work Location</label>
                                         <div class="RadioBtn">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="WorkFromHome" onChange={this.handleChange.bind(this,"WorkLocation")}/>
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="WorkFromHome" checked={this.props.fields.WorkLocation.WorkLocation=== "WorkFromHome"} onChange={this.handleChange.bind(this,"WorkLocation")}/>
                                                 <label class="form-check-label" for="inlineRadio1">Home</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="WorkFromOffice" onChange={this.handleChange.bind(this,"WorkLocation")}/>
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="WorkFromOffice" checked={this.props.fields.WorkLocation.WorkLocation=== "WorkFromOffice"} onChange={this.handleChange.bind(this,"WorkLocation")}/>
                                                 <label class="form-check-label" for="inlineRadio2">Office</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Both" onChange={this.handleChange.bind(this,"WorkLocation")}/>
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Both" checked={this.props.fields.WorkLocation.WorkLocation=== "Both"} onChange={this.handleChange.bind(this,"WorkLocation")}/>
                                                 <label class="form-check-label" for="inlineRadio2">Both</label>
                                             </div>
                                         </div>
@@ -231,6 +245,7 @@ const mapDispatchToProps = dispatch => {
         changeState : (name,val)=> dispatch({type:"CHANGE_FIELD", name:name, val:val, data : 'employmentQues'}),
         checkFormIsValid : () => dispatch({type: "IS_FORM_VALID", data : 'fields'}), 
         onFilled : () => dispatch({type: "ON_FILLED", data : 'employment'}),
+        mapDatabaseToLocal : (name,res,) => dispatch({type : "MAP_DATABASE_TO_LOCAl", name:name, res: res,})
     }
 }
 

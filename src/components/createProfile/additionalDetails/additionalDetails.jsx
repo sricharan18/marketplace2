@@ -315,7 +315,7 @@ class AdditionalDetails extends React.Component {
                     </div>
                     <div className="btn-group NextFormButtons">
                         <button className="common-btn commonOutlineBtn">Draft</button>
-                        <Link to="/createProfile/employmentDetails"><button className="common-btn commonBlueBtn" onClick={() => this.props.onFilled()}>Save & Next</button></Link>
+                        <Link to="/createProfile/employmentDetails"><button className="common-btn commonBlueBtn" onClick={() => localStorage.setItem("isAdditionalFilled" , true)}>Save & Next</button></Link>
                     </div>
 
                     <div className="modal fade" id="enterDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

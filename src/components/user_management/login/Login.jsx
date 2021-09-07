@@ -42,7 +42,8 @@ class Login extends React.Component{
         
         axios.post("http://localhost:9001/api/admin/users", data, 
         {headers : headers}).then((response) => {
-            console.log(response)
+            console.log("Login",response)
+            localStorage.setItem("userID", response.data.id)
             if (response.data.activated === false){
                 this.props.setActive("Sign Up")
             }

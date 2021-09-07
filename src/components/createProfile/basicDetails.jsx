@@ -1,8 +1,10 @@
 import React from 'react';
 import './createprofile.css';
 import { connect } from 'react-redux';
+import { compose } from "redux";
 import { Link, Redirect, useHistory, withRouter } from 'react-router-dom';
 import axios from 'axios';
+import $ from "jquery";
 
 import UploadImage from '../uploadImage/uploadImage';
 import Input from '../input/input';
@@ -19,7 +21,7 @@ class BasicDetails extends React.Component{
         }
 
         if (rules.name) {
-            isValid = /^[A-Za-z]+$/.test(value) && isValid;
+            isValid = /^[A-Za-z\s]+$/.test(value) && isValid;
         }
 
         if (rules.email) {
@@ -60,6 +62,31 @@ class BasicDetails extends React.Component{
             this.props.changeState(field, obj)
         }
     }
+
+    componentDidMount(){
+        // try{
+        //     $('.modal-backdrop').hide();
+        //     // $('#signUp').click();
+        //   } catch(err){
+  
+        //   }
+        if (localStorage.getItem("WorkerID") !== null){
+            // axios.get('http://localhost:9001/api/workers/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
+            // {
+                
+            // })
+            axios.get('http://localhost:9001/api/workers/profile/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
+                {
+                console.log(res)
+                this.props.mapDatabaseToLocal("fields",res.data.worker,)
+                })
+
+        } else {
+            this.props.getEmail()
+        }
+
+    }
+
     handleSubmit = async () => {
         console.log(this.props.formValid)
 
@@ -92,21 +119,21 @@ class BasicDetails extends React.Component{
             .then((response) => {console.log(response); localStorage.setItem("WorkerID", response.data.id)}).catch((e) => console.log(e))
 
             
-
-            axios.post('http://localhost:9001/api/categories', {isParent : true, name : this.props.fields.Category},
+            await axios.post('http://localhost:9001/api/categories', {isParent : true, name : this.props.fields.Category.Category},
                 {headers : headers})
             .then((response) => 
                 
                 {
                 console.log(response)
-                axios.post('http://localhost:9001/api/categories', {isParent : false, name : this.props.fields.Sub_Category, parent : response.data},
+                axios.post('http://localhost:9001/api/categories', {isParent : false, name : this.props.fields.Sub_Category.Sub_Category, parent : response.data},
                     {headers : headers})
                 .then((response) => {console.log(response)}).catch((e) => console.log(e))  
             }).catch((e) => console.log(e))  
 
 
             this.props.history.push('/createProfile/additionalDetails')
-            this.props.onFilled()
+            localStorage.setItem("isBasicFilled" , true)
+
 
         } else {
             this.forceUpdate()
@@ -275,6 +302,7 @@ class BasicDetails extends React.Component{
                                     elementType="select" name="Location"
                                     options = {["Select", "English", "Physician", "Surgeon", 
                                     "Technical", "Others"] }
+                                    value={this.props.fields.CurrentLocation.CurrentLocation}
                                     inValid = {this.props.fields.CurrentLocation.inValid}
                                     change={this.handleChange.bind(this,"CurrentLocation",{select : true})}/>
 
@@ -315,8 +343,10 @@ const mapDispatchToProps = dispatch => {
         checkFormIsValid : () => dispatch({type: "IS_FORM_VALID", data : 'fields'}), 
         onFilled : () => dispatch({type: "ON_FILLED", data : 'basic'}),
         // workerId: (id) => dispatch({type : "SET_WORKER_ID", id : id})
+        getEmail : () => dispatch({type: "GET_EMAIL"}),
+        mapDatabaseToLocal : (name,res,res2) => dispatch({type : "MAP_DATABASE_TO_LOCAl", name:name, res: res, res2: res2})
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(BasicDetails);
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(BasicDetails);

@@ -28,6 +28,8 @@ class Signup2 extends React.Component{
             'Authorization': 'JWT fefege...'
           }
 
+        localStorage.setItem("email",this.mobileNumber)
+
         const data = {         
           "email": this.mobileNumber,
           "login": this.mobileNumber,
@@ -38,6 +40,7 @@ class Signup2 extends React.Component{
         {headers : headers}).then((response) => {
             console.log(response)
             if (response.data.activated){
+                localStorage.setItem("userID", response.data.id)
                 this.props.setActive("Login")
             }
           }).catch((error) => {

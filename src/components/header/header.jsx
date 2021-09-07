@@ -58,7 +58,7 @@ class Header extends React.Component{
           </form> --> */}
           </div>
           <form className=" my-2 my-lg-0 DisNoneMob">
-          {(localStorage.getItem("token") !== null) ? <p onClick={() => localStorage.removeItem("token")}>SignOut</p>: <div>
+          {(localStorage.getItem("token") !== null) ? <Link to="/"><p onClick={() => {localStorage.clear()}}>SignOut</p></Link>: <div>
           <button type="button" className="navbar-Btn log-in-btn" data-toggle="modal" data-target="#login">Log In</button>
           <button type="button" className="navbar-Btn sign-up-btn" data-toggle="modal" data-target="#signUp">Sign Up</button>
           <div className="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

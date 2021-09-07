@@ -19,6 +19,8 @@ class CollapsedEducation extends React.Component{
     onDelete = async (id) => {
         await axios.delete('http://localhost:9001/api/educations/'+id, {headers : this.headers}).then((res) => console.log(res))
 
+
+        // console.log()
         await axios.get('http://localhost:9001/api/educations/worker/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
         {
             this.props.mapDatabaseToLocal(res.data)

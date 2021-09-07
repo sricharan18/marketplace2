@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import axios from 'axios';
+import $ from 'jquery';
 
 import './viewProfile.css';
 import Header from '../header/Header';
@@ -17,6 +18,14 @@ class ViewProfile extends React.Component
       }
 
     componentDidMount(){
+        try{
+          $('.modal-backdrop').hide();
+          // $('#signUp').click();
+          // window.location.reload(false);
+        } catch(err){
+
+        }
+        
         axios.get('http://localhost:9001/api/employments/worker/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
         {
             console.log(res.data)
@@ -41,12 +50,14 @@ class ViewProfile extends React.Component
         })
         axios.get('http://localhost:9001/api/workers/profile/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
         {
-          console.log(res)
-          this.props.mapDatabaseToLocal("employmentDetails",res.data)
+          if (res.data.jobPreference.length !== 0){
+            this.props.mapDatabaseToLocal("employmentDetails",res.data)
+        }
         })
     }
     render()
     {
+        
         console.log(this.props.basicDetailsFields)
         return (
             <div>
@@ -439,7 +450,7 @@ const mapDispatchToProps = dispatch => {
     return {
         editDetails : (id,name) => dispatch({type : "EDIT_DETAILS", id : id, name:name}),
         changeModal : (modal)=> dispatch({type:"CHANGE_MODAL", modal : modal}),
-        mapDatabaseToLocal : (name,res,res2) => dispatch({type : "MAP_DATABASE_TO_LOCAl", name:name, res: res, res2: res2})
+        mapDatabaseToLocal : (name,res) => dispatch({type : "MAP_DATABASE_TO_LOCAl", name:name, res: res,})
     }
 }
 

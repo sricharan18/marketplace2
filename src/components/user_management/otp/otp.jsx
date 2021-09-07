@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import {Link, withRouter} from "react-router-dom";
 
 
 class OTP extends React.Component{
@@ -69,7 +70,7 @@ class OTP extends React.Component{
         
     }
 
-    verifyOtp = () => {
+    verifyOtp = async () => {
         const headers = {
             'Content-Type': 'application/json',
           }
@@ -80,14 +81,18 @@ class OTP extends React.Component{
         }
         
         
-        axios.post("http://localhost:9001/api/admin/users/authenticate", data, 
+        await axios.post("http://localhost:9001/api/admin/users/authenticate", data, 
         {headers : headers}).then((response) => {
             console.log(response)
             if (response.data) {
                 this.props.success()
-                console.log({"username" : this.props.mobNum, "password": this.otp})
-                axios.post("http://localhost:9001/api/authenticate", {"username" : this.props.mobNum, "password": this.otp}).then(
-                    (res) => {console.log(res) ; localStorage.setItem("token", res.data.id_token)}
+
+                axios.get("http://localhost:9001/api/workers/get/" + localStorage.getItem("userID"),).then(
+                    (res) => {console.log(res) ; localStorage.setItem("WorkerID", res.data.id) }
+                ).catch(err => console.log(err))
+
+                axios.post("http://localhost:9001/api/authenticate", {"username" : this.props.mobNum, "password": "1234"}).then(
+                    (res) => {console.log(res) ; localStorage.setItem("token", res.data.id_token); console.log(localStorage.getItem("token"))}
                 ).catch(err => console.log(err))
             } else {
                 document.querySelector('#otp_attempts').innerHTML="You have "+ this.attempts +" more attempts"
@@ -101,6 +106,10 @@ class OTP extends React.Component{
           }).catch((error) => {
               console.log(error)
           })
+
+          if (localStorage.getItem("userID") !== null){
+            this.props.history.push('/viewProfile')
+          }
     }
 
     componentDidMount()
@@ -138,8 +147,12 @@ class OTP extends React.Component{
                     </div>
 
                     <div class="btn-group">
-                    {/* <button type="button" class="Social-login-btn fb-button" onClick = { () => this.props.back('otp') }>Back</button> */}
+                        {(this.props.active === "Sign Up") ? <button type="button" class="Social-login-btn common-lightblue-button wid100" onClick = { this.verifyOtp }>Verify</button>: 
+                        // <Link to="/viewProfile" class="Social-login-btn common-lightblue-button wid100"><button type="button" class="Social-login-btn common-lightblue-button wid100" onClick = { this.verifyOtp }>Verify</button></Link>
                         <button type="button" class="Social-login-btn common-lightblue-button wid100" onClick = { this.verifyOtp }>Verify</button>
+                        }
+                    {/* <button type="button" class="Social-login-btn fb-button" onClick = { () => this.props.back('otp') }>Back</button> */}
+                        
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -151,4 +164,4 @@ class OTP extends React.Component{
     };
 }
  
-export default OTP;
+export default withRouter(OTP);
