@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import Input from "../input/input";
 import SideNav from './sideNav';
-import Header from '../header/header';
+import Header from '../header/Header';
 
 
 class EmploymentQues extends React.Component {

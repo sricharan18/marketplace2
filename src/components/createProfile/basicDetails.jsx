@@ -7,7 +7,7 @@ import axios from 'axios';
 import UploadImage from '../uploadImage/uploadImage';
 import Input from '../input/input';
 import SideNav from './sideNav';
-import Header from '../header/header';
+import Header from '../header/Header';
 
 class BasicDetails extends React.Component{
     sub_options = null

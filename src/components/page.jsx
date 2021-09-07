@@ -5,6 +5,7 @@ import CreateProfile from './createProfile/createProfile';
 import AdditionalDetails from './createProfile/additionalDetails/additionalDetails';
 import BasicDetails from './createProfile/basicDetails';
 import EmploymentQues from './createProfile/employmentQues';
+import { Home } from './home/home';
 
 class Page extends React.Component{
     // constructor(props)
@@ -17,6 +18,7 @@ class Page extends React.Component{
     return (
         <BrowserRouter>
             <Switch>
+                <Route path="/" exact component={Home} />
                 <Route path="/createProfile/basicDetails" component={BasicDetails} />
                 <Route path="/createProfile/additionalDetails" exact component={AdditionalDetails} />
                 <Route path="/createProfile/employmentDetails" exact component={EmploymentQues} />

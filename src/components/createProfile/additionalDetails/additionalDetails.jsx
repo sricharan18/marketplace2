@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import Modal from './modal';
 import DetailsPanel from './detailsPanel';
 import SideNav from '../sideNav';
-import Header from '../../header/header';
+import Header from '../../header/Header';
 import DetailsPanel2 from './detailsPanel2'
 
 class AdditionalDetails extends React.Component {
