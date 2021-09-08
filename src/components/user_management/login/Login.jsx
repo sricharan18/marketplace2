@@ -27,31 +27,31 @@ class Login extends React.Component{
         // }
     }
 
-    componentWillUnmount () {
+    // componentWillUnmount () {
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'JWT fefege...'
-          }
+    //     const headers = {
+    //         'Content-Type': 'application/json',
+    //         'Authorization': 'JWT fefege...'
+    //       }
 
-        const data = {         
-          "email": this.mobileNumber,
-          "login": this.mobileNumber
-        }
+    //     const data = {         
+    //       "email": this.mobileNumber,
+    //       "login": this.mobileNumber
+    //     }
         
         
-        axios.post("http://localhost:9001/api/admin/users", data, 
-        {headers : headers}).then((response) => {
-            console.log("Login",response)
-            localStorage.setItem("userID", response.data.id)
-            if (response.data.activated === false){
-                this.props.setActive("Sign Up")
-            }
-          }).catch((error) => {
-              console.log(error)
-          })
+    //     axios.post("http://localhost:9001/api/admin/users", data, 
+    //     {headers : headers}).then((response) => {
+    //         console.log("Login",response)
+    //         // localStorage.setItem("userID", response.data.id)
+    //         if (response.data.activated === false){
+    //             this.props.setActive("Sign Up")
+    //         }
+    //       }).catch((error) => {
+    //           console.log(error)
+    //       })
 
-    }
+    // }
     render(){
     return (
         // <div>

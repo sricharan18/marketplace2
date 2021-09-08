@@ -84,7 +84,8 @@ class OTP extends React.Component{
         await axios.post("http://localhost:9001/api/admin/users/authenticate", data, 
         {headers : headers}).then((response) => {
             console.log(response)
-            if (response.data) {
+            console.log(response.data)
+            if (response.data === true) {
                 this.props.success()
 
                 axios.get("http://localhost:9001/api/workers/get/" + localStorage.getItem("userID"),).then(
@@ -94,6 +95,10 @@ class OTP extends React.Component{
                 axios.post("http://localhost:9001/api/authenticate", {"username" : this.props.mobNum, "password": "1234"}).then(
                     (res) => {console.log(res) ; localStorage.setItem("token", res.data.id_token); console.log(localStorage.getItem("token"))}
                 ).catch(err => console.log(err))
+
+                if (localStorage.getItem("userID") !== null){
+                    this.props.history.push('/viewProfile')
+                  }
             } else {
                 document.querySelector('#otp_attempts').innerHTML="You have "+ this.attempts +" more attempts"
                 if (this.attempts !== 0){
@@ -107,9 +112,6 @@ class OTP extends React.Component{
               console.log(error)
           })
 
-          if (localStorage.getItem("userID") !== null){
-            this.props.history.push('/viewProfile')
-          }
     }
 
     componentDidMount()
