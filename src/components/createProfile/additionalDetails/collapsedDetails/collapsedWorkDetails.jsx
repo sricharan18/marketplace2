@@ -35,7 +35,7 @@ class CollapsedWorkDetails extends React.Component{
 
                     <div class="addedDetailContent">
                     <p>{this.props.val.Designation.Designation}</p>
-                    <span>{this.props.val.EmployerName.EmployerName}, Full Time, {this.props.val.StartDate.StartDate.split("-")[0]} - {this.props.val.EndDate.EndDate.split("-")[0]}</span>
+                    <span>{this.props.val.EmployerName.EmployerName}, Full Time, {this.props.val.StartDate.StartDate.split("-")[0]} - {this.props.val.CurrentlyStudying.CurrentlyStudying===false?this.props.val.EndDate.EndDate.split("-")[0]:'currently working'}</span>
                     </div>
 
                     <div class="actionBtns">

@@ -1,24 +1,14 @@
-import React from 'react';
-import './createprofile.css';
-import { connect } from 'react-redux';
-import { compose } from "redux";
-import { Link, Redirect, useHistory, withRouter } from 'react-router-dom';
+import React from "react";
+import { connect } from "react-redux";
 import axios from 'axios';
+import $ from "jquery";
 
-import UploadImage from '../uploadImage/uploadImage';
-import Input from '../input/input';
-import SideNav from './sideNav';
-import Header from '../header/Header';
+import Input from "./input/input";
+import UploadImage from "./uploadImage/uploadImage";
 
-class BasicDetails extends React.Component{
 
-    subCategory = null
-    subCategoryIDs = []
-    state = {
-        sub_options : []
-    }
-    CategoryOptions = []
-    CategoryIDs =[]
+class EditBasicDetailsModal extends React.Component {
+    sub_options = null
 
     handleValidation(value, rules){
         let isValid = true;
@@ -68,9 +58,18 @@ class BasicDetails extends React.Component{
             this.props.changeState(field, obj)
         }
     }
-
-    componentWillMount(){
+    componentDidMount(){
+        // try{
+        //     $('.modal-backdrop').hide();
+        //     // $('#signUp').click();
+        //   } catch(err){
+  
+        //   }
         if (localStorage.getItem("WorkerID") !== null){
+            // axios.get('http://localhost:9001/api/workers/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
+            // {
+                
+            // })
             axios.get('http://localhost:9001/api/workers/profile/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
                 {
                 console.log(res)
@@ -81,25 +80,15 @@ class BasicDetails extends React.Component{
             this.props.getEmail()
         }
 
-        axios.get('http://localhost:9001/api/allcategories', {headers : this.headers}).then((res) => 
-        {
-            this.CategoryOptions = res.data.map((item, id) => {return item.name})
-            this.forceUpdate()
-            this.CategoryIDs = res.data.map((item, id) => {return item.id})
-        })
-
     }
 
     handleSubmit = async () => {
-        console.log(this.props.formValid)
-
+         
         const headers = {
             'Content-Type': 'application/json',
             // 'Authorization': 'Bearer '+ localStorage.getItem("token")
           }
-
-        console.log(headers)
-
+ 
         if (this.props.formValid){
             var data = {
                 firstName: this.props.fields.Name.Name,
@@ -117,70 +106,43 @@ class BasicDetails extends React.Component{
             }
               
             console.log(data)
-            // if(localStorage.getItem("isBasicFilled") === "false"){
-                await axios.post('http://localhost:9001/api/workers', data, {headers : headers})
+            
+            await axios.post('http://localhost:9001/api/workers', data, {headers : headers})
             .then((response) => {console.log(response); localStorage.setItem("WorkerID", response.data.id)}).catch((e) => console.log(e))
 
             
-                // await axios.post('http://localhost:9001/api/categories', {isParent : true, name : this.props.fields.Category.Category},
-                //     {headers : headers})
-                // .then((response) => 
-                    
-                //     {
-                //     console.log(response)
-                //     axios.post('http://localhost:9001/api/categories', {isParent : false, name : this.props.fields.Sub_Category.Sub_Category, parent : response.data},
-                //         {headers : headers})
-                //     .then((response) => {console.log(response)}).catch((e) => console.log(e))  
-                // }).catch((e) => console.log(e))  
-            // } else {
-            //     data["id"] = localStorage.getItem("WorkerID")
-            //     await axios.put('http://localhost:9001/api/workers/'+localStorage.getItem("WorkerID"), data, {headers : headers})
-            // .then((response) => {console.log(response);}).catch((e) => console.log(e))
-            // }            
+            await axios.post('http://localhost:9001/api/categories', {isParent : true, name : this.props.fields.Category.Category},
+                {headers : headers})
+            .then((response) => 
+                
+                {
+                console.log(response)
+                axios.post('http://localhost:9001/api/categories', {isParent : false, name : this.props.fields.Sub_Category.Sub_Category, parent : response.data},
+                    {headers : headers})
+                .then((response) => {console.log(response)}).catch((e) => console.log(e))  
+            }).catch((e) => console.log(e))  
+            $('#enterDetails').click();
 
-
-            this.props.history.push('/createProfile/additionalDetails')
-            localStorage.setItem("isBasicFilled" , true)
-
-
-        } else {
-            this.forceUpdate()
         }
     }
 
+    render (){
+        if (this.props.sel === "HealthCare") {
+            this.sub_options = ["Administration", "Nursing", "Physician", "Surgeon", "Technical", "Others"]
+        } else if (this.props.sel === "Blue Collar") {
+            this.sub_options = ["Driver", "Plumber", "Others"]
+        } else {
+            this.sub_options = ["FrontEnd", "BackEnd", "Full Stack", "Data Science", "Dev-Ops", "Cyber Security", "Others"]
+        }
 
-    handleSubCategory = async (id , event) => {
-        await axios.get('http://localhost:9001/api/allsubcategories/'+id, {headers : this.headers}).then((res) => 
-    {
-        console.log(res)
-        this.setState({sub_options : res.data.map((item, id) => {return item.name})})
-        this.subCategoryIDs = res.data.map((item) => {return item})
-
-        this.subCategory = <Input 
+        const subCategory = <Input 
                 divClass="form-group col-md-4" label="Sub-Category" 
                 config = {{className :"form-control form-select" ,}}
                 elementType="select"
-                options = {this.state.sub_options} change={(event) => {this.handleChange("Sub_Category", {}, event); localStorage.setItem("subCat",JSON.stringify(this.subCategoryIDs[this.state.sub_options.indexOf(event.target.value)]))}}/>
-        this.forceUpdate()
-    })
-    }
-    
-    render(){
-
-    return (
-        <div>
-        <Header />
-        <section className="mainbgColor create-profile-section">
-        <div className="container-fluid">
-            <div className="row">
-            <SideNav page='basicDetails' additionalPage = {this.props.additionalPage} employmentPage = {this.props.employmentPage}/>
-                    <div className="col-md-9">
-                        <div className="CreateProfileForm">
-                            <div className="profileHeadSec">
-                                <h4>Create Profile</h4>
-                            </div>
-
-                            <div className="FormSec basicDetails">
+                options = {this.sub_options} change={this.handleChange.bind(this,"Sub_Category", {})}/>
+        return (
+            <div class="modal-content">
+                  <div className="FormSec basicDetails">
                                 <form>
                                     <div className="form-row">
                                         <div className="col-md-9">
@@ -258,11 +220,11 @@ class BasicDetails extends React.Component{
                                         divClass="form-group col-md-4" label="Category" 
                                         config = {{className :"form-control form-select" ,}}
                                         elementType="select"
-                                        options = {this.CategoryOptions}
+                                        options = {["HealthCare", "Blue Collar", "IT"] }
                                         value = {this.props.fields.Category}
-                                        change={(event) => {this.props.setCategory(event ); this.handleSubCategory(this.CategoryIDs[this.CategoryOptions.indexOf(event.target.value)])}}/>
+                                        change={this.props.setCategory}/>
 
-                                        { this.subCategory }
+                                        { subCategory }
 
                                     </div>
 
@@ -320,20 +282,15 @@ class BasicDetails extends React.Component{
                                     change={this.handleChange.bind(this,"CurrentLocation",{select : true})}/>
 
                                 </form>
-                            </div>
-                        
+                            </div>    
+                            <div class="modal-footer">
+                        <div class="btn-group NextFormButtons ModalNextFormButtons ">
+                            <button class="common-btn commonBlueBtn" 
+                            onClick = {() => {this.props.checkFormIsValid(); setTimeout(() => this.handleSubmit(),5)}}>Save</button>
                         </div>
-                        <div className="btn-group NextFormButtons">
-                            <button className="common-btn commonOutlineBtn">Draft</button>
-                            <button className="common-btn commonBlueBtn" onClick = {() => {this.props.checkFormIsValid(); setTimeout(() => this.handleSubmit(),5)}}>Save & Next</button>
-                        </div>
-                    </div>
-                    </div>
-            </div>
-        </section>
+                        </div>   
         </div>
-        
-    )
+        )
     }
 }
 
@@ -349,17 +306,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setCategory : (event) => dispatch({type : "CHANGE_CATEGORY", item : event.target.value}),
+        setCategory : (event) => dispatch({type : "CHANGE_CATEGORY", val : event.target.value}),
         changeState : (name,val)=> dispatch({type:"CHANGE_FIELD",name:name,val:val,data : 'fields'}),
-        goToAdditionalDetails : () => dispatch({type: "ADDITIONAL_DETAILS"}),
         changeErrorState : (field, val) => dispatch({type : "CHANGE_ERROR_STATE", field : field, val : val, data : 'fields'}),
         checkFormIsValid : () => dispatch({type: "IS_FORM_VALID", data : 'fields'}), 
-        onFilled : () => dispatch({type: "ON_FILLED", data : 'basic'}),
-        // workerId: (id) => dispatch({type : "SET_WORKER_ID", id : id})
         getEmail : () => dispatch({type: "GET_EMAIL"}),
         mapDatabaseToLocal : (name,res,res2) => dispatch({type : "MAP_DATABASE_TO_LOCAl", name:name, res: res, res2: res2})
     }
 }
 
 
-export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(BasicDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(EditBasicDetailsModal);

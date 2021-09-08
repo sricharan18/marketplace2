@@ -146,7 +146,7 @@ class WorkHistory extends React.Component {
                         />
                     <div class=" col-md-6">
                     <div class="form-row">
-                        <Input 
+                    {!this.props.fields.CurrentlyStudying.CurrentlyStudying&&<Input 
                         divClass="form-group col-md-6" label="End Date" 
                         config = {{className :"form-control" ,
                                 placeholder : "Enter End Date", 
@@ -155,11 +155,11 @@ class WorkHistory extends React.Component {
                         change={this.handleChange.bind(this,"EndDate" ,{required : true, endDate : true})}
                         inValid = {this.props.fields.EndDate.inValid}
                         error = {this.props.errors.EndDate}
-                        elementType="input" 
-                        />
+                        elementType="input"
+                        />}
                         <div class="form-group col-md-6">
                         <div class="form-check">
-                            <label class="checkBoxContainer">Currently Studying
+                            <label class="checkBoxContainer">Currently Working
                                 <input type="checkbox" checked={this.props.fields.CurrentlyStudying.CurrentlyStudying} onChange={this.handleChange.bind(this,"CurrentlyStudying",{})}/>
                                 <span class="checkmark"></span>
                             </label>

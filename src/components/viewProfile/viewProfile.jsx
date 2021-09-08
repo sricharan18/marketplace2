@@ -84,7 +84,7 @@ class ViewProfile extends React.Component
 
                             <div class="status online"><span class="onlinedot"></span>Active</div>
 
-                            <button type="button" className="commonOutlineBtn EditViewedProfile">
+                            <button type="button" className="commonOutlineBtn EditViewedProfile" data-toggle="modal" data-target="#enterDetails" onClick={()=>{this.props.changeModal("basicDetails")}}>
                               <svg xmlns="http://www.w3.org/2000/svg" height="13px" viewBox="0 0 24 24" width="13px" fill="#007BFF">
                                 <path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                               </svg>
@@ -175,11 +175,11 @@ class ViewProfile extends React.Component
 
                             <div class="addedDetailContent">
                             <p>{val.Designation.Designation}</p>
-                            <span>{val.EmployerName.EmployerName}, Full Time, {val.StartDate.StartDate.split("-")[0]} - {val.EndDate.EndDate.split("-")[0]}</span>
+                            <span>{val.EmployerName.EmployerName}, Full Time, {val.StartDate.StartDate.split("-")[0]} - {val.CurrentlyStudying.CurrentlyStudying===false?val.EndDate.EndDate.split("-")[0]:'currently working'}</span>
                             </div>
 
                             <div class="actionBtns">
-                             <a href="#" class="editDetails" data-toggle="modal" data-target="#enterDetails" onClick={()=>{this.props.editDetails(id,"workDetails");this.props.changeModal("workDetails")}}>
+                             <a href="#" class="editDetails" data-toggle="modal" data-target="#enterDetails" onClick={()=>{this.props.editDetails(val.id.id,"workDetails");this.props.changeModal("workDetails")}}>
                                <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="#007BFF">
                                  <path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                                </svg>
@@ -222,7 +222,7 @@ class ViewProfile extends React.Component
                             </div>
 
                             <div class="actionBtns">
-                             <a href="#" class="editDetails" data-toggle="modal" data-target="#enterDetails" onClick={()=>{this.props.editDetails(id,"educationalDetails");this.props.changeModal("educationalDetails")}}>
+                             <a href="#" class="editDetails" data-toggle="modal" data-target="#enterDetails" onClick={()=>{this.props.editDetails(val.id.id,"educationalDetails");this.props.changeModal("educationalDetails")}}>
                                <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="#007BFF">
                                  <path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                                </svg>
@@ -266,7 +266,7 @@ class ViewProfile extends React.Component
                             </div>
 
                             <div class="actionBtns">
-                             <a href="#" class="editDetails" data-toggle="modal" data-target="#enterDetails" onClick={()=>{this.props.editDetails(id,"certifications");this.props.changeModal("certifications")}}>
+                             <a href="#" class="editDetails" data-toggle="modal" data-target="#enterDetails" onClick={()=>{this.props.editDetails(val.id.id,"certifications");this.props.changeModal("certifications")}}>
                                <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="#007BFF">
                                  <path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                                </svg>

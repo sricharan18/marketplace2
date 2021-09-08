@@ -1,5 +1,5 @@
 const initialState = {
-    CategorySelected : "HealthCare",
+    CategorySelected : 0,
     isBasicDetailsFilled:false,
     isAdditionalDetailsFilled:false,
     isEmploymentDetailsFilled:false,
@@ -35,7 +35,7 @@ const initialState = {
         profilePic: undefined,
         Gender: {Gender : '', inValid : false},
         DOB: {DOB : '', inValid : false},
-        Category: "HealthCare",
+        Category: "",
         Sub_Category: 'Administration',
         ID_Proof: {ID_Proof : '',},
         ID_Code: {ID_Code : '',},
@@ -110,7 +110,7 @@ const initialState = {
             EmployerName: "Enter valid Name",
             Designation: "Enter valid Designation",
             StartDate: "Enter valid Date",
-            EndDate: "Enter valid Date",
+            EndDate: "",
             WorkLocation: "Enter valid Work Location"
         },
         errorsdup : {
@@ -183,19 +183,21 @@ const reducer = (state = initialState, action) => {
     switch (action.type){
 
         case "CHANGE_CATEGORY" : 
-                newState.CategorySelected = action.val;
-                let f={...newState.fields.fields}
-                f['Category']=action.val;
-                if(action.val  ==='HealthCare'){
-                    f['Sub_Category']='Administration'
-                }
-                else if(action.val==='Blue Collar'){
-                    f['Sub_Category']='Driver'
-                }
-                else{
-                    f['Sub_Category']='FrontEnd'
-                }
-                newState.fields.fields=f
+                // console.log(action.val)
+                // newState.CategorySelected = action.val;
+                newState.fields.fields['Category'] = action.item
+                // let f={...newState.fields.fields}
+                // f['Category']=action.val;
+                // if(action.val  ==='HealthCare'){
+                //     f['Sub_Category']='Administration'
+                // }
+                // else if(action.val==='Blue Collar'){
+                //     f['Sub_Category']='Driver'
+                // }
+                // else{
+                //     f['Sub_Category']='FrontEnd'
+                // }
+                // newState.fields.fields=f
                 break;
 
         case "CHANGE_FIELD":

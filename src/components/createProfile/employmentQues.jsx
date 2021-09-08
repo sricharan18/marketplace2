@@ -61,7 +61,8 @@ class EmploymentQues extends React.Component {
             hourlyRate : hourlyRate,
             worker : {
                 id : localStorage.getItem("WorkerID"),
-            }
+            },
+            subCategory : JSON.parse(localStorage.getItem("subCat"))
         }
 
         console.log(data)
@@ -76,10 +77,12 @@ class EmploymentQues extends React.Component {
         axios.post('http://localhost:9001/api/job-preferences', data, {headers : headers})
         .then((response) => {
             console.log(response)
-            console.log({city : this.props.fields.LocationPreference.LocationPreference, employment : {id : response.data.id}})
+            console.log({city : this.props.fields.LocationPreference.LocationPreference, })
             axios.post('http://localhost:9001/api/locations', 
-        {city : this.props.fields.LocationPreference.LocationPreference, employment : {id : response.data.id}}, {headers : headers})
-        .then((response) => {console.log(response)}).catch((e) => console.log(e))
+        {city : this.props.fields.LocationPreference.LocationPreference}, {headers : headers})
+        .then((res) => {
+            console.log(res); console.log({worker : response.data, location : res.data, prefrenceOrder : 1}); axios.post('http://localhost:9001/api/location-prefrences', {worker : response.data, location : res.data, prefrenceOrder : 1})})
+            .catch((e) => console.log(e))
         }).catch((e) => console.log(e))
 
         
