@@ -106,21 +106,21 @@ class EditBasicDetailsModal extends React.Component {
             }
               
             console.log(data)
-            
-            await axios.post('http://localhost:9001/api/workers', data, {headers : headers})
-            .then((response) => {console.log(response); localStorage.setItem("WorkerID", response.data.id)}).catch((e) => console.log(e))
+            data["id"] = localStorage.getItem("WorkerID")
+            await axios.put('http://localhost:9001/api/workers/'+localStorage.getItem("WorkerID"), data, {headers : headers})
+            .then((response) => {console.log(response);}).catch((e) => console.log(e))
 
             
-            await axios.post('http://localhost:9001/api/categories', {isParent : true, name : this.props.fields.Category.Category},
-                {headers : headers})
-            .then((response) => 
+            // await axios.post('http://localhost:9001/api/categories', {isParent : true, name : this.props.fields.Category.Category},
+            //     {headers : headers})
+            // .then((response) => 
                 
-                {
-                console.log(response)
-                axios.post('http://localhost:9001/api/categories', {isParent : false, name : this.props.fields.Sub_Category.Sub_Category, parent : response.data},
-                    {headers : headers})
-                .then((response) => {console.log(response)}).catch((e) => console.log(e))  
-            }).catch((e) => console.log(e))  
+            //     {
+            //     console.log(response)
+            //     axios.post('http://localhost:9001/api/categories', {isParent : false, name : this.props.fields.Sub_Category.Sub_Category, parent : response.data},
+            //         {headers : headers})
+            //     .then((response) => {console.log(response)}).catch((e) => console.log(e))  
+            // }).catch((e) => console.log(e))  
             $('#enterDetails').click();
 
         }

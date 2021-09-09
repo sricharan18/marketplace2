@@ -14,7 +14,7 @@ class EditEmploymentModal extends React.Component {
         obj[field] = event.target.value 
         this.props.changeState(field, obj)
     }
-
+    
     handleSubmit(){
         var monthlyRate = 0
         var hourlyRate = 0
@@ -50,21 +50,30 @@ class EditEmploymentModal extends React.Component {
             hourlyRate : hourlyRate,
             worker : {
                 id : localStorage.getItem("WorkerID"),
-            }
+            },
+            subCategory : JSON.parse(localStorage.getItem("subCat"))
         }
+
+        console.log(data)
+
 
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ this.props.token
+            // 'Authorization': 'Bearer '+ this.props.token
           }
           
 
-        axios.post('http://localhost:9001/api/job-preferences', data, {headers : headers})
+        axios.post('http://localhost:9001/api/job-preferences/', data, {headers : headers})
         .then((response) => {
+            console.log(response)
+            console.log({city : this.props.fields.LocationPreference.LocationPreference, })
             axios.post('http://localhost:9001/api/locations', 
-        {city : this.props.fields.LocationPreference.LocationPreference, employmentId : response.data.id}, {headers : headers})
-        .then((response) => {console.log(response)}).catch((e) => console.log(e))
+        {city : this.props.fields.LocationPreference.LocationPreference}, {headers : headers})
+        .then((res) => {
+            console.log(res); console.log({worker : response.data, location : res.data, prefrenceOrder : 1}); axios.post('http://localhost:9001/api/location-prefrences', {worker : response.data, location : res.data, prefrenceOrder : 1})})
+            .catch((e) => console.log(e))
         }).catch((e) => console.log(e))
+
         $('#enterDetails').click();
     }
 

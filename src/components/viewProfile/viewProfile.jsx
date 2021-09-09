@@ -10,6 +10,8 @@ import Modal from '../createProfile/additionalDetails/modal';
 import certification from '../../imgaes/certification.png'
 import Workplace from '../../imgaes/Workplace.png'
 import template from '../../imgaes/template_3.jpg'
+import CollapsedCertifications from '../createProfile/additionalDetails/collapsedDetails/collapsedCertifications';
+
 class ViewProfile extends React.Component
 {
     headers = {
@@ -254,7 +256,13 @@ class ViewProfile extends React.Component
                             </div>
                           </div> */}
                           <div id='ViewAllCertifications' className='collapse' aria-expanded="false">
-                        {this.props.certificationFields.map((val,id) => (
+                          {/* <div id={this.props.href} class="panel-collapse collapse in" role="tabpanel" aria-labelledby={this.props.id}>
+                          <div class="panel-body"> */}
+                          
+                          {this.props.certificationFields.map((val,id) => (<CollapsedCertifications val = {val} key={id} id={val.id} modal="certifications"/>))}
+
+                          {/* </div> */}
+                        {/* {this.props.certificationFields.map((val,id) => (
                           <div class="addedDetail paddX15 disF">
                             <div class="workIconImg">
                               <img src={certification} />
@@ -273,7 +281,7 @@ class ViewProfile extends React.Component
                              </a>
                            </div>
 
-                          </div>))}
+                          </div>))} */}
                             </div>
                         </div>
                       </div>
