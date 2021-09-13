@@ -81,7 +81,7 @@ class EmploymentQues extends React.Component {
             axios.post('http://localhost:9001/api/locations', 
         {city : this.props.fields.LocationPreference.LocationPreference}, {headers : headers})
         .then((res) => {
-            console.log(res); console.log({worker : response.data, location : res.data, prefrenceOrder : 1}); axios.post('http://localhost:9001/api/location-prefrences', {worker : response.data, location : res.data, prefrenceOrder : 1})})
+            console.log(res); axios.post('http://localhost:9001/api/location-prefrences', {worker : response.data, location : res.data, prefrenceOrder : 1})})
             .catch((e) => console.log(e))
         }).catch((e) => console.log(e))
 

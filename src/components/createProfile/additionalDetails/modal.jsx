@@ -27,7 +27,7 @@ class Modal extends React.Component {
                 modal=(<Recommendations/>)
                 break
             case "employmentDetails":
-                modal=(<EditEmploymentModal/>)
+                modal=(<EditEmploymentModal subCategoryID={this.props.subCategoryID}/>)
                 break
             case "basicDetails":
                 modal=(<EditBasicDetailsModal/>)

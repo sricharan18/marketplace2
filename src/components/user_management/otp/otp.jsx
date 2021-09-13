@@ -82,21 +82,21 @@ class OTP extends React.Component{
         
         
         await axios.post("http://localhost:9001/api/admin/users/authenticate", data, 
-        {headers : headers}).then((response) => {
+        {headers : headers}).then(async (response) => {
             console.log(response)
             console.log(response.data)
             if (response.data === true) {
                 this.props.success()
-
-                axios.get("http://localhost:9001/api/workers/get/" + localStorage.getItem("userID"),).then(
-                    (res) => {console.log(res) ; localStorage.setItem("WorkerID", res.data.id) }
-                ).catch(err => console.log(err))
 
                 axios.post("http://localhost:9001/api/authenticate", {"username" : this.props.mobNum, "password": "1234"}).then(
                     (res) => {console.log(res) ; localStorage.setItem("token", res.data.id_token); console.log(localStorage.getItem("token"))}
                 ).catch(err => console.log(err))
 
                 if (localStorage.getItem("userID") !== null){
+                    await axios.get("http://localhost:9001/api/workers/get/" + localStorage.getItem("userID"),).then(
+                        (res) => {console.log(res) ; localStorage.setItem("WorkerID", res.data.id) }
+                    ).catch(err => {console.log(err); this.props.history.push('/createProfile/basicDetails'); localStorage.removeItem("userID")})
+                    
                     this.props.history.push('/viewProfile')
                   }
             } else {
@@ -135,7 +135,7 @@ class OTP extends React.Component{
                     </svg>  
                     {this.props.active}
                 </h5>
-                <p>Enter the 4-digit code sent to <br></br> +91 XXXXXXX890</p>
+                <p>Enter the 4-digit code sent to <br></br> xxxxxxxxx@gmail.com</p>
                 <div className="error otp_timer">Your OTP will expire in - <span id="time">10:00</span></div>
                 <div style={{ color: 'red', fontSize: '13px'}} id="otp_attempts"></div>
                 </div>

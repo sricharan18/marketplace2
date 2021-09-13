@@ -29,6 +29,7 @@ class Page extends React.Component{
                 <Route path="/" exact component={Home} />
                 <Route path="/createProfile/basicDetails" render={() => 
                     ((localStorage.getItem("token") !== null) ? <BasicDetails />: <Redirect to="/" />)}/>
+                {/* <Route path="/createProfile/basicDetails" component={BasicDetails}/> */}
                 <Route path="/createProfile/additionalDetails" render={() => 
                     ((localStorage.getItem("token") !== null) ? <AdditionalDetails />: <Redirect to="/" />)}/>
                 <Route path="/createProfile/employmentDetails" render={() => 

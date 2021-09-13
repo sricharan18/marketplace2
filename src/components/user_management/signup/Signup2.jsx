@@ -21,11 +21,10 @@ class Signup2 extends React.Component{
         // console.log(this.mobileNumber)
     }
 
-    componentWillUnmount () {
+    componentWillUnmount = () => {
 
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'JWT fefege...'
           }
 
         localStorage.setItem("email",this.mobileNumber)
@@ -34,18 +33,22 @@ class Signup2 extends React.Component{
           "email": this.mobileNumber,
           "login": this.mobileNumber,
         }
+
+        console.log(data)
         
         
         axios.post("http://localhost:9001/api/admin/users", data, 
         {headers : headers}).then((response) => {
-            console.log(response)
-            if (response.data.activated){
-                localStorage.setItem("userID", response.data.id)
-                this.props.setActive("Login")
-            }
+            console.log("post",response)
+            // if (response.data.activated){
+            //     localStorage.setItem("userID", response.data.id)
+            //     this.props.setActive("Login")
+            // }
           }).catch((error) => {
               console.log(error)
           })
+
+          console.log(data)
 
     }
 
@@ -98,12 +101,12 @@ class Signup2 extends React.Component{
                     </svg>
                     Sign Up
                 </h5>
-                <p>Continue using Mobile</p>
+                <p>Continue using Email</p>
                 </div>
                 <div class="modal-body candidate-signup">
                     <div class="form-group">
-                        <label for="MobileNumber" style={{ marginBottom : '8px' }}>Mobile Number</label>
-                        <input onChange={(e) => this.validateMobileNo(e)} type="text" class="form-control" id="MobileNumber" placeholder="Enter your mobile number" required />
+                        <label for="MobileNumber" style={{ marginBottom : '8px' }}>Email</label>
+                        <input onChange={(e) => this.validateMobileNo(e)} type="text" class="form-control" id="MobileNumber" placeholder="Enter your email" required />
                         <div class="invalid-feedback">
                         Please provide a number.
                         </div>

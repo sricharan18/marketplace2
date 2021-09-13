@@ -341,7 +341,7 @@ const reducer = (state = initialState, action) => {
                                     Sub_Category: "",
                                     Gender: {Gender : item.gender, inValid : false},
                                     DOB: {DOB : item.dateOfBirth, inValid : false},
-                                    Category: "HealthCare",
+                                    Category: "",
                                     ID_Proof: {ID_Proof : item.idProof,},
                                     ID_Code: {ID_Code : item.idCode,},
                                     Status: {Status : item.status,},
@@ -349,8 +349,14 @@ const reducer = (state = initialState, action) => {
 
                             
                                         })
+                    
                     })
                     data = data[0]
+                    console.log(action.res2)
+                    if (action.res2){
+                        data["Category"] = action.res2.parent.name
+                    }
+                    
                     break;
                 case "employmentDetails" : data = [action.res.jobPreference].at(-1).map((item, id) => {
                     let rate=0

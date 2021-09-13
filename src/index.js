@@ -13,6 +13,7 @@ import reducer from './store/createProfile';
 const store = createStore(reducer)
 
 axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("token")
+// axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("token")
 
 ReactDOM.render(
   <Provider store = {store}>

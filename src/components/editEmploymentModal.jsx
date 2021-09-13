@@ -51,7 +51,7 @@ class EditEmploymentModal extends React.Component {
             worker : {
                 id : localStorage.getItem("WorkerID"),
             },
-            subCategory : JSON.parse(localStorage.getItem("subCat"))
+            subCategory : {id: this.props.subCategoryID}
         }
 
         console.log(data)

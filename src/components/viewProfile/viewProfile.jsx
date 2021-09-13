@@ -14,6 +14,9 @@ import CollapsedCertifications from '../createProfile/additionalDetails/collapse
 
 class ViewProfile extends React.Component
 {
+
+    SubCategoryID = null
+    SubCategory = null
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer '+ this.props.token
@@ -43,7 +46,7 @@ class ViewProfile extends React.Component
         })
         axios.get('http://localhost:9001/api/skills-masters/worker/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
         {
-            this.props.mapDatabaseToLocal("skills",res.data)
+            // this.props.mapDatabaseToLocal("skills",res.data)
         })
         axios.get('http://localhost:9001/api/workers/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
         {
@@ -52,6 +55,11 @@ class ViewProfile extends React.Component
         })
         axios.get('http://localhost:9001/api/workers/profile/'+localStorage.getItem("WorkerID"), {headers : this.headers}).then((res) => 
         {
+            console.log(res.data)
+            if(res.data.category.at(-1)){
+              this.SubCategoryID = res.data.category.at(-1).id
+              this.SubCategory = res.data.category.at(-1).name
+            }
           if (res.data.jobPreference.length !== 0){
             this.props.mapDatabaseToLocal("employmentDetails",res.data)
         }
@@ -102,7 +110,7 @@ class ViewProfile extends React.Component
                                   <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 0 24 24" width="15px" fill="#FA852B">
                                     <path d="M0 0h24v24H0z" fill="none"/><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
                                   </svg>
-                                  {this.props.basicDetailsFields.Sub_Category}
+                                  {this.SubCategory}
                                 </span>
                               </li>
                               <li>
@@ -434,7 +442,7 @@ class ViewProfile extends React.Component
     </section>
                 <div class="modal fade" id="enterDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered multistepModal CreateProfileModal" role="document">
-                        <Modal />
+                        <Modal subCategoryID = {this.SubCategoryID}/>
                     </div>
                 </div>
             </div>

@@ -88,6 +88,8 @@ class BasicDetails extends React.Component{
             this.CategoryIDs = res.data.map((item, id) => {return item.id})
         })
 
+        console.log(this.props.fields.Category)
+
     }
 
     handleSubmit = async () => {
@@ -241,6 +243,7 @@ class BasicDetails extends React.Component{
                                             </div>
                                         </div>
                                          <UploadImage onChange={this.handleChange.bind(this,"profilePic", {})}/>
+                                         {console.log(this.props.fields.profilePic)}
                                     </div>
 
                                     <div className="form-row">
@@ -301,8 +304,8 @@ class BasicDetails extends React.Component{
                                             divClass="form-group col-md-4" label="Language" 
                                             config = {{className :"form-control form-select" ,}}
                                             elementType="select" 
-                                            options = {["Select", "English", "Physician", "Surgeon", 
-                                            "Technical", "Others"] }
+                                            options = {["Select", "English", "Hindi", "Telugu", 
+                                            "Tamil", "Others"] }
                                             value = {this.props.fields.Language.Language}
                                             inValid = {this.props.fields.Language.inValid}
                                             change={this.handleChange.bind(this,"Language",{select : true})}/>
@@ -313,8 +316,8 @@ class BasicDetails extends React.Component{
                                     divClass="form-group" label="Current Location" 
                                     config = {{className :"form-control form-select" ,}}
                                     elementType="select" name="Location"
-                                    options = {["Select", "English", "Physician", "Surgeon", 
-                                    "Technical", "Others"] }
+                                    options = {["Select", "Delhi", "Mumbai", "Hyderabad", 
+                                    "Noida", "Others"] }
                                     value={this.props.fields.CurrentLocation.CurrentLocation}
                                     inValid = {this.props.fields.CurrentLocation.inValid}
                                     change={this.handleChange.bind(this,"CurrentLocation",{select : true})}/>

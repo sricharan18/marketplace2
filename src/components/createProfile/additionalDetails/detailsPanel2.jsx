@@ -27,7 +27,9 @@ class DetailsPanel2 extends React.Component{
                 
 
                 await axios.post('http://localhost:9001/api/skills-masters', data, {headers : headers})
-                .then((response) => {console.log(response)}).catch((e) => console.log(e))
+                .then((response) => 
+                {console.log(response); axios.patch("http://localhost:9001/api/workers/"+localStorage.getItem("WorkerID"),
+                 data={skills : [response.data], id : localStorage.getItem("WorkerID")}, {headers : {"Content-Type" : "application/merge-patch+json"}})}).catch((e) => console.log(e))
 
                 axios.get('http://localhost:9001/api/skills-masters/worker/'+localStorage.getItem("WorkerID")).then((res) => 
                 {

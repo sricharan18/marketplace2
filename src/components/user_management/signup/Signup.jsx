@@ -21,12 +21,12 @@ class Signup extends React.Component{
                     </svg>
                     Sign Up
                 </h5>
-                <p>Enter your Mobile Number and Continue</p>
+                <p>Enter your Email and Continue</p>
                 </div>
                 <div class="modal-body candidate-signup">
                     <div class="form-group">
-                        <label for="MobileNumber" style={{ marginBottom : '8px' }}>Mobile Number</label>
-                        <input onClick = {this.props.signupMobile} type="text" class="form-control" id="MobileNumber" placeholder="Enter your mobile number" required />
+                        <label for="MobileNumber" style={{ marginBottom : '8px' }}>Email</label>
+                        <input onClick = {this.props.signupMobile} type="text" class="form-control" id="MobileNumber" placeholder="Enter your email" required />
                         <div class="invalid-feedback">
                         Please provide a number.
                         </div>
